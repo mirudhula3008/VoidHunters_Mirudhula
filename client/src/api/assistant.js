@@ -1,3 +1,3 @@
 import api from './client';
 
-export const askAssistant = (message, intent) => api.post('/assistant', { message, intent }).then((r) => r.data);
+export const askAssistant = ({ message, intent, params }) => api.post('/assistant', { message, intent, params }).then((r) => r.data);

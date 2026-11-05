@@ -14,6 +14,43 @@ const PUBLIC_WORKER_FIELDS = {
 
 const MAX_RADIUS_KM = 50;
 
+// Who customers can see: verified and not restricted. Seeded and older accounts may have no accountStatus; that counts as active.
+const VISIBLE_WORKER = { role: 'worker', isVerified: true, accountStatus: { $nin: ['suspended', 'blocked', 'under_review'] } };
+
+// Nearest workers matching `match`, each with distance, price range and recommendation score.
+async function findNearbyWorkers({ lat, lng, radiusKm, match, job }) {
+  // With a job chosen, the price shown is that job's price, not the worker's whole range.
+  const prices = job
+    ? {
+        $map: {
+          input: { $filter: { input: '$services', cond: { $eq: ['$$this.job', job] } } },
+          in: '$$this.price',
+        },
+      }
+    : '$services.price';
+
+  const workers = await User.aggregate([
+    {
+      $geoNear: {
+        near: { type: 'Point', coordinates: [lng, lat] },
+        distanceField: 'distance',
+        maxDistance: radiusKm * 1000,
+        spherical: true,
+        query: match,
+      },
+    },
+    { $project: PUBLIC_WORKER_FIELDS },
+    {
+      $addFields: {
+        minPrice: { $min: prices },
+        maxPrice: { $max: prices },
+      },
+    },
+    { $limit: 50 },
+  ]);
+  return rankWorkers(workers);
+}
+
 function toNumber(value) {
   if (value === undefined || value === '') return undefined;
   const n = Number(value);
@@ -40,8 +77,7 @@ async function searchWorkers(req, res, next) {
     const minRating = toNumber(req.query.minRating);
     const { category, job } = req.query;
 
-    // Seeded and older accounts may have no accountStatus; treat that as active.
-    const match = { role: 'worker', isVerified: true, accountStatus: { $nin: ['suspended', 'blocked', 'under_review'] } };
+    const match = { ...VISIBLE_WORKER };
 
     if (category) {
       if (!categoryIds.includes(category)) {
@@ -68,37 +104,8 @@ async function searchWorkers(req, res, next) {
       match.services = { $elemMatch: serviceMatch };
     }
 
-    // With a job chosen, the price shown is that job's price, not the worker's whole range.
-    const prices = job
-      ? {
-          $map: {
-            input: { $filter: { input: '$services', cond: { $eq: ['$$this.job', job] } } },
-            in: '$$this.price',
-          },
-        }
-      : '$services.price';
-
-    const workers = await User.aggregate([
-      {
-        $geoNear: {
-          near: { type: 'Point', coordinates: [lng, lat] },
-          distanceField: 'distance',
-          maxDistance: radiusKm * 1000,
-          spherical: true,
-          query: match,
-        },
-      },
-      { $project: PUBLIC_WORKER_FIELDS },
-      {
-        $addFields: {
-          minPrice: { $min: prices },
-          maxPrice: { $max: prices },
-        },
-      },
-      { $limit: 50 },
-    ]);
-
-    res.json({ count: workers.length, radiusKm, workers: rankWorkers(workers) });
+    const workers = await findNearbyWorkers({ lat, lng, radiusKm, match, job });
+    res.json({ count: workers.length, radiusKm, workers });
   } catch (err) {
     next(err);
   }
@@ -155,4 +162,4 @@ async function getWorkerReviews(req, res, next) {
   }
 }
 
-module.exports = { searchWorkers, getWorker, getWorkerReviews };
+module.exports = { searchWorkers, getWorker, getWorkerReviews, findNearbyWorkers, VISIBLE_WORKER };

@@ -5,11 +5,28 @@
 const INTENTS = [
   {
     id: 'complaint',
+    urgent: true,
     keywords: [
       'complaint', 'complain', 'fraud', 'scam', 'cheated', 'harass', 'threat', 'unsafe', 'emergency', 'human', 'agent', 'customer care', 'contact support',
       'புகார்', 'மோசடி', 'அவசரம்',
       'शिकायत', 'धोखा', 'आपातकाल',
       'অভিযোগ', 'প্রতারণা', 'জরুরি',
+    ],
+  },
+  { id: 'myTickets', urgent: true, keywords: ['my ticket', 'ticket status', 'என் டிக்கெட்', 'मेरे टिकट', 'मेरा टिकट', 'আমার টিকিট'] },
+  {
+    id: 'raiseTicket',
+    urgent: true,
+    keywords: [
+      'ticket', 'raise', 'report a problem', 'report an issue', 'issue', 'problem', 'not working', 'something wrong',
+      'டிக்கெட்', 'சிக்கல்', 'टिकट', 'समस्या', 'টিকিট', 'সমস্যা',
+    ],
+  },
+  {
+    id: 'suggestWorker',
+    keywords: [
+      'suggest', 'recommend', 'best worker', 'top worker', 'good worker', 'who should i', 'need a ', 'looking for',
+      'பரிந்துரை', 'सुझाव', 'सिफ़ारिश', 'পরামর্শ', 'প্রস্তাব',
     ],
   },
   { id: 'howCancel', keywords: ['cancel', 'decline', 'reject', 'ரத்து', 'रद्द', 'বাতিল'] },
@@ -65,6 +82,25 @@ const INTENTS = [
   { id: 'help', keywords: ['help', 'what can you', 'who are you', 'options', 'உதவி', 'मदद', 'सहायता', 'সাহায্য'] },
 ];
 
+// Words for each service, so "need a plumber" can suggest plumbers.
+const CATEGORY_WORDS = {
+  plumbing: ['plumb', 'pipe', 'leak', 'tap ', 'faucet', 'பிளம்பர்', 'குழாய்', 'प्लंबर', 'নলের', 'প্লাম্বার'],
+  electrical: ['electric', 'wiring', 'switch', 'எலக்ட்ரீஷியன்', 'மின்', 'इलेक्ट्रीशियन', 'বিদ্যুৎ', 'ইলেকট্রিশিয়ান'],
+  carpentry: ['carpent', 'furniture', 'தச்சர்', 'बढ़ई', 'ছুতার'],
+  painting: ['paint', 'வர்ணம்', 'पेंटर', 'রং'],
+  cleaning: ['clean', 'சுத்தம்', 'सफ़ाई', 'পরিষ্কার'],
+  appliance_repair: ['appliance', 'fridge', 'washing machine', 'air condition', 'ac repair', 'ac service', 'microwave', 'geyser', 'குளிர்சாதன', 'फ़्रिज', 'ফ্রিজ'],
+  construction: ['construct', 'mason', 'tile', 'renovat', 'welding', 'கட்டுமான', 'निर्माण', 'নির্মাণ'],
+  packers_movers: ['packer', 'mover', 'shifting', 'இடமாற்ற', 'शिफ्टिंग', 'স্থানান্তর'],
+  cctv_security: ['cctv', 'camera', 'security', 'சிசிடிவி', 'सीसीटीवी', 'সিসিটিভি'],
+  mechanic: ['mechanic', 'automotive', 'car service', 'car repair', 'bike', 'puncture', 'tyre', 'வாகன', 'मैकेनिक', 'মেকানিক'],
+};
+
+function detectCategory(message) {
+  const text = `${String(message).toLowerCase().trim()} `;
+  return Object.keys(CATEGORY_WORDS).find((id) => CATEGORY_WORDS[id].some((word) => hasKeyword(text, word))) || null;
+}
+
 // Only count when the message is little more than this.
 const SMALL_TALK = [
   { id: 'thanks', keywords: ['thank', 'thanks', 'thx', 'நன்றி', 'धन्यवाद', 'शुक्रिया', 'ধন্যবাদ'] },
@@ -97,6 +133,8 @@ const hasWholeWord = (text, keyword) =>
   /^[\x00-\x7f]+$/.test(keyword) ? new RegExp(`\\b${keyword}\\b`).test(text) : text.includes(keyword);
 
 const MAX_SMALL_TALK_WORDS = 5;
+// Someone reporting a problem wants help with it, even when they also name a topic ("a problem with my payment").
+const URGENT_BONUS = 10;
 
 // Returns an intent id, or 'outOfScope' for anything else.
 function detectIntent(message) {
@@ -105,14 +143,16 @@ function detectIntent(message) {
 
   let best = null;
   let bestScore = 0;
-  INTENTS.forEach(({ id, keywords }) => {
-    const score = countMatches(text, keywords);
+  INTENTS.forEach(({ id, keywords, urgent }) => {
+    const matches = countMatches(text, keywords);
+    const score = matches && urgent ? matches + URGENT_BONUS : matches;
     if (score > bestScore) {
       best = id;
       bestScore = score;
     }
   });
   if (best) return best;
+  if (detectCategory(text)) return 'suggestWorker';
 
   if (text.split(/\s+/).length <= MAX_SMALL_TALK_WORDS) {
     const smallTalk = SMALL_TALK.find(({ keywords }) => keywords.some((k) => hasWholeWord(text, k)));
@@ -121,6 +161,6 @@ function detectIntent(message) {
   return 'outOfScope';
 }
 
-const INTENT_IDS = [...INTENTS, ...SMALL_TALK].map((i) => i.id).concat('outOfScope');
+const INTENT_IDS = [...INTENTS, ...SMALL_TALK].map((i) => i.id).concat('outOfScope', 'welcome', 'ticketBookings');
 
-module.exports = { detectIntent, INTENT_IDS };
+module.exports = { detectCategory, detectIntent, INTENT_IDS };

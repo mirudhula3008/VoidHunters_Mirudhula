@@ -13,6 +13,7 @@ const LINKS = {
   customer: [
     { to: '/dashboard', label: 'nav.services' },
     { to: '/bookings', label: 'nav.myBookings' },
+    { to: '/support/tickets', label: 'nav.tickets' },
     { to: '/profile', label: 'nav.profile' },
   ],
   worker: [
@@ -20,12 +21,14 @@ const LINKS = {
     { to: '/worker/jobs', label: 'nav.jobs' },
     { to: '/worker/earnings', label: 'nav.earnings' },
     { to: '/worker/reviews', label: 'nav.reviews' },
+    { to: '/support/tickets', label: 'nav.tickets' },
     { to: '/profile', label: 'nav.profile' },
   ],
   admin: [
     { to: '/admin', label: 'nav.overview', end: true },
     { to: '/admin/workers', label: 'nav.workers' },
     { to: '/admin/bookings', label: 'nav.bookings' },
+    { to: '/admin/tickets', label: 'nav.tickets' },
   ],
 };
 const GUEST_LINKS = [{ to: '/dashboard', label: 'nav.findWorkers' }];

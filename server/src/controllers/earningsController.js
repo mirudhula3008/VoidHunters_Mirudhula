@@ -104,6 +104,38 @@ async function buildEarningsSummary(user) {
   };
 }
 
+// This month against last month, and the service that has earned the most. Used by the chat assistant.
+async function buildEarningsInsights(user) {
+  const { month } = boundaries();
+  const t = ist(month);
+  const lastMonth = fromIst(t.getUTCFullYear(), t.getUTCMonth() - 1, 1);
+
+  const [[totals = {}], [top]] = await Promise.all([
+    Payment.aggregate([
+      ...earnedPipeline(user._id),
+      {
+        $group: {
+          _id: null,
+          thisMonth: sumIf({ $gte: ['$earnedAt', month] }, '$amount'),
+          lastMonth: sumIf({ $and: [{ $gte: ['$earnedAt', lastMonth] }, { $lt: ['$earnedAt', month] }] }, '$amount'),
+        },
+      },
+    ]),
+    Payment.aggregate([
+      ...earnedPipeline(user._id),
+      { $group: { _id: '$booking.serviceName', amount: { $sum: '$amount' }, jobs: { $sum: 1 } } },
+      { $sort: { amount: -1 } },
+      { $limit: 1 },
+    ]),
+  ]);
+
+  return {
+    lastMonthNet: netOf(totals.lastMonth),
+    changePercent: totals.lastMonth ? Math.round(((totals.thisMonth - totals.lastMonth) / totals.lastMonth) * 100) : null,
+    topService: top ? { name: top._id, net: netOf(top.amount), jobs: top.jobs } : null,
+  };
+}
+
 // GET /api/earnings/summary
 const getSummary = asyncHandler(async (req, res) => {
   res.json(await buildEarningsSummary(req.user));
@@ -235,4 +267,4 @@ function methodLabel(method, details = {}) {
   return 'Cash';
 }
 
-module.exports = { buildEarningsSummary, getSummary, getHistory, getTransactions, methodLabel };
+module.exports = { buildEarningsInsights, buildEarningsSummary, getSummary, getHistory, getTransactions, methodLabel };

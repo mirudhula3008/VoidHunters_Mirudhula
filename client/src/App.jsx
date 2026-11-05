@@ -25,6 +25,8 @@ import AdminWorkers from './pages/AdminWorkers';
 import AdminWorkerDetail from './pages/AdminWorkerDetail';
 import AdminCustomers from './pages/AdminCustomers';
 import AdminBookings from './pages/AdminBookings';
+import AdminTickets from './pages/AdminTickets';
+import MyTickets from './pages/MyTickets';
 import PaymentPage from './pages/PaymentPage';
 import EarningsDashboard from './pages/EarningsDashboard';
 
@@ -71,6 +73,10 @@ export default function App() {
             {/* Payments and earnings */}
             <Route path="/payment/:bookingId" element={guard(['customer'], <PaymentPage />)} />
             <Route path="/worker/earnings" element={guard(['worker'], <EarningsDashboard />)} />
+
+            {/* Customer support */}
+            <Route path="/support/tickets" element={guard(['customer', 'worker'], <MyTickets />)} />
+            <Route path="/admin/tickets" element={guard(['admin'], <AdminTickets />)} />
 
             <Route path="*" element={<NotFound />} />
           </Routes>
