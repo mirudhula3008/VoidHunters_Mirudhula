@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogOut, Menu, Wrench, X } from 'lucide-react';
+import Avatar from './Avatar';
 import LanguageSelector from './LanguageSelector';
 import { homePathFor, useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
@@ -94,9 +95,7 @@ export default function Navbar() {
 
           {user ? (
             <div className="mt-2 flex items-center gap-2 border-t border-slate-100 pt-3 lg:ml-2 lg:mt-0 lg:border-l lg:border-t-0 lg:pl-4 lg:pt-0">
-              <span className="flex h-8 w-8 flex-none items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-sm font-semibold text-white">
-                {user.name.charAt(0).toUpperCase()}
-              </span>
+              <Avatar person={user} className="h-8 w-8" textClass="text-sm" />
               <span className="text-sm leading-tight">
                 <span className="block font-semibold text-navy">{user.name.split(' ')[0]}</span>
                 <span className="block text-xs text-slate-500">{t(`nav.roles.${user.role}`)}</span>

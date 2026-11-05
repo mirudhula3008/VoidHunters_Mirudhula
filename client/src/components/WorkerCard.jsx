@@ -1,28 +1,25 @@
 import { Link } from 'react-router-dom';
 import { Check, MapPin } from 'lucide-react';
+import Avatar from './Avatar';
 import StarDisplay from './StarDisplay';
+import { unitLabel } from './ServicesEditor';
 import { useLanguage } from '../context/LanguageContext';
 import { formatDistanceShort, formatPriceRange } from '../utils/format';
 
 // Worker card (theme guide §6): avatar, name + Verified, stars, distance, availability, price, Negotiable.
-export default function WorkerCard({ worker, highlighted, onHover }) {
+export default function WorkerCard({ worker, job, highlighted, onHover }) {
   const { t } = useLanguage();
+  const jobUnit = job && worker.services?.find((s) => s.job === job)?.unit;
   return (
     <Link
-      to={`/workers/${worker._id}`}
+      to={job ? `/workers/${worker._id}?job=${job}` : `/workers/${worker._id}`}
       onMouseEnter={() => onHover?.(worker._id)}
       onMouseLeave={() => onHover?.(null)}
       className={`flex gap-4 rounded-2xl border bg-white p-4 shadow-card transition hover:shadow-lift ${
         highlighted ? 'border-blue-600 shadow-glow' : 'border-slate-200'
       }`}
     >
-      {worker.profilePhoto ? (
-        <img src={worker.profilePhoto} alt="" className="h-14 w-14 flex-none rounded-full bg-slate-100 object-cover" loading="lazy" />
-      ) : (
-        <span className="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-xl font-semibold text-white">
-          {worker.name.charAt(0)}
-        </span>
-      )}
+      <Avatar person={worker} className="h-14 w-14" textClass="text-xl" />
 
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
@@ -49,6 +46,7 @@ export default function WorkerCard({ worker, highlighted, onHover }) {
 
         <div className="mt-2 flex flex-wrap items-center gap-2">
           <span className="font-bold text-navy">{worker.minPrice == null ? t('worker.priceOnRequest') : formatPriceRange(worker.minPrice, worker.maxPrice)}</span>
+          {jobUnit && <span className="text-xs text-slate-400">{unitLabel(jobUnit, t)}</span>}
           {worker.isNegotiable && <span className="badge badge-negotiable">{t('worker.negotiable')}</span>}
         </div>
       </div>

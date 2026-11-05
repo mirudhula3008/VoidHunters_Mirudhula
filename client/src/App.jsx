@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 import CustomerDashboard from './pages/CustomerDashboard';
+import JobPicker from './pages/JobPicker';
 import WorkerListing from './pages/WorkerListing';
 import WorkerDetail from './pages/WorkerDetail';
 import BookingForm from './pages/BookingForm';
@@ -42,6 +43,7 @@ export default function App() {
 
             {/* Module 2 — Service Discovery and Maps (browsing is public; booking needs login) */}
             <Route path="/dashboard" element={<CustomerDashboard />} />
+            <Route path="/services/:category" element={<JobPicker />} />
             <Route path="/workers" element={<WorkerListing />} />
             <Route path="/workers/:id" element={<WorkerDetail />} />
 

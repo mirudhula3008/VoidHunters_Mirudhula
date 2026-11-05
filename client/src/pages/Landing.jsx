@@ -3,7 +3,7 @@ import { ArrowRight, BadgeCheck, IndianRupee, MapPin, Star } from 'lucide-react'
 import CategoryIcon from '../components/CategoryIcon';
 import { homePathFor, useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
-import { CATEGORIES } from '../data/categories';
+import { CATEGORIES, categoryPath } from '../data/categories';
 
 const STEPS = [
   { Icon: MapPin, title: 'landing.step1Title', text: 'landing.step1Text' },
@@ -79,7 +79,7 @@ export default function Landing() {
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORIES.map((c) => (
-              <Link key={c.id} to={`/workers?category=${c.id}`} className="card card-hover group flex flex-col p-6">
+              <Link key={c.id} to={categoryPath(c.id)} className="card card-hover group flex flex-col p-6">
                 <CategoryIcon id={c.id} />
                 <h3 className="mt-5 text-lg font-semibold text-navy">{t(`services.${c.id}`)}</h3>
                 <p className="mt-1.5 flex-1 text-sm leading-relaxed text-slate-500">{t(`services.desc.${c.id}`)}</p>

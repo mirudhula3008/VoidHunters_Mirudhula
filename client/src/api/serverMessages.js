@@ -45,6 +45,8 @@ const EXACT = {
   'A reason of at least 10 characters is required for every status change': 'server.reasonRequired',
   'Evidence must be a list of http(s) URLs': 'server.badEvidence',
   'This worker was just updated by someone else. Please refresh.': 'server.staleWorker',
+  'Please select a valid gender': 'auth.errors.chooseGender',
+  'Please choose a job from the list for each service': 'server.chooseJobForService',
   'Server error': 'common.error',
 };
 

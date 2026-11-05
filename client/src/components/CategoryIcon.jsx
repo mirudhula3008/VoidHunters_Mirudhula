@@ -1,4 +1,4 @@
-import { Bike, Car, Cog, Hammer, KeyRound, Paintbrush, Refrigerator, Sparkles, Wrench, Zap } from 'lucide-react';
+import { Cctv, Cog, Hammer, HardHat, Paintbrush, Refrigerator, Sparkles, Truck, Wrench, Zap } from 'lucide-react';
 
 // Line icon + tile tint per service category (theme guide §5–6). Names and blurbs live in the locale files.
 export const CATEGORY_META = {
@@ -8,9 +8,9 @@ export const CATEGORY_META = {
   painting: { Icon: Paintbrush, tile: 'bg-blue-50 text-blue-600' },
   cleaning: { Icon: Sparkles, tile: 'bg-emerald-50 text-emerald-700' },
   appliance_repair: { Icon: Refrigerator, tile: 'bg-slate-100 text-slate-700' },
-  vehicle_rental: { Icon: KeyRound, tile: 'bg-amber-100 text-amber-700' },
-  car_wash: { Icon: Car, tile: 'bg-blue-50 text-blue-600' },
-  bike_wash: { Icon: Bike, tile: 'bg-emerald-50 text-emerald-700' },
+  construction: { Icon: HardHat, tile: 'bg-amber-100 text-amber-700' },
+  packers_movers: { Icon: Truck, tile: 'bg-blue-50 text-blue-600' },
+  cctv_security: { Icon: Cctv, tile: 'bg-emerald-50 text-emerald-700' },
   mechanic: { Icon: Cog, tile: 'bg-slate-100 text-slate-700' },
 };
 

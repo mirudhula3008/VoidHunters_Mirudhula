@@ -10,6 +10,7 @@ import { createBooking, getWorkerProfile } from '../api/bookings';
 import { errorMessage } from '../api/client';
 import { formatPrice } from '../utils/format';
 import { formatScheduleDate, formatTime } from '../utils/bookings';
+import { serviceLabel } from '../data/categories';
 
 const toLatLng = (loc) => (loc?.coordinates?.length === 2 ? { lat: loc.coordinates[1], lng: loc.coordinates[0] } : null);
 
@@ -24,7 +25,10 @@ export default function BookingForm() {
 
   const [worker, setWorker] = useState(state?.worker?._id === workerId ? state.worker : null);
   const [loadError, setLoadError] = useState(null);
-  const [serviceName, setServiceName] = useState('');
+  // The job the customer searched for is already selected.
+  const [serviceName, setServiceName] = useState(
+    state?.worker?.services?.find((s) => state.job && s.job === state.job)?.name || ''
+  );
   const [schedule, setSchedule] = useState({ date: '', time: '' });
   const [offer, setOffer] = useState('');
   const [description, setDescription] = useState('');
@@ -114,7 +118,7 @@ export default function BookingForm() {
                         onChange={() => setServiceName(s.name)}
                         className="h-4 w-4 accent-blue-600"
                       />
-                      <span className="text-slate-800">{s.name}</span>
+                      <span className="text-slate-800">{serviceLabel(s.name, t)}</span>
                     </span>
                     <span className="font-semibold text-slate-900">
                       {formatPrice(s.price)} <span className="text-xs font-normal text-slate-400">{unitLabel(s.unit, t)}</span>

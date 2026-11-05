@@ -77,10 +77,10 @@
       "painting": "Find painters",
       "cleaning": "Find cleaners",
       "appliance_repair": "Find appliance technicians",
-      "vehicle_rental": "Find vehicles to rent",
-      "car_wash": "Find car wash",
-      "bike_wash": "Find bike wash",
-      "mechanic": "Find nearby mechanics"
+      "mechanic": "Find nearby mechanics",
+      "construction": "Find construction jobs",
+      "packers_movers": "Find moving services",
+      "cctv_security": "Find security services"
     },
     "desc": {
       "plumbing": "Pipe repairs, installations, leak fixes.",
@@ -89,16 +89,16 @@
       "painting": "Interior, exterior and touch-up painting.",
       "cleaning": "Home deep clean, kitchen, bathroom, office.",
       "appliance_repair": "AC, fridge, washing machine, TV and more.",
-      "vehicle_rental": "Rent cars, bikes and scooters by the day.",
-      "car_wash": "Doorstep car wash, interior cleaning, detailing.",
-      "bike_wash": "Bike wash, polish and chain cleaning.",
-      "mechanic": "Car and bike repair, servicing, breakdown help."
+      "mechanic": "Car and bike repair, servicing, breakdown help.",
+      "construction": "Masonry, tiling, waterproofing, welding and renovation.",
+      "packers_movers": "Home and office shifting, packing, loading and transport.",
+      "cctv_security": "Cameras, alarms, biometric locks and intercoms."
     },
     "appliance_repair": "Appliance Repair",
-    "vehicle_rental": "Vehicle Rental",
-    "car_wash": "Car Wash",
-    "bike_wash": "Bike Wash",
-    "mechanic": "Mechanic"
+    "mechanic": "Mechanic",
+    "construction": "Construction",
+    "packers_movers": "Packers & Movers",
+    "cctv_security": "CCTV & Security"
   },
   "auth": {
     "loginTitle": "Welcome Back",
@@ -152,7 +152,14 @@
       "shareLocation": "Please share your location so customers can find you",
       "uploadId": "Please upload an ID proof",
       "loginFailed": "Could not log in. Please try again.",
-      "registerFailed": "Could not create your account. Please try again."
+      "registerFailed": "Could not create your account. Please try again.",
+      "chooseGender": "Please select your gender"
+    },
+    "gender": "Gender",
+    "genders": {
+      "male": "Male",
+      "female": "Female",
+      "other": "Other / prefer not to say"
     }
   },
   "location": {
@@ -187,7 +194,8 @@
       "per sq ft": "per sq ft",
       "per visit": "per visit",
       "per day": "per day"
-    }
+    },
+    "chooseJob": "Choose a job"
   },
   "worker": {
     "verified": "Verified",
@@ -236,7 +244,9 @@
     "noMatch": "No workers match these filters. Try a larger distance or a higher price limit.",
     "loadError": "Could not load workers.",
     "youAreHere": "You are here",
-    "viewProfileLink": "View profile →"
+    "viewProfileLink": "View profile →",
+    "chooseJob": "Choose the job you need to see workers near you.",
+    "allJobs": "← All {{category}} jobs"
   },
   "booking": {
     "title": "Book Service",
@@ -530,7 +540,8 @@
     "staleWorker": "This worker was just updated by someone else. Please refresh.",
     "cannotChangeBooking": "This booking can't be changed because it is {{status}}",
     "alreadyStatus": "Worker is already {{status}}",
-    "bookingWas": "This booking was {{status}}"
+    "bookingWas": "This booking was {{status}}",
+    "chooseJobForService": "Please choose a job from the list for each service"
   },
   "admin": {
     "status": {
@@ -705,6 +716,28 @@
     "start": "Start job",
     "starting": "Starting…",
     "upcoming": "Upcoming",
-    "updateFailed": "Could not update the job."
+    "updateFailed": "Could not update the job.",
+    "mason": "Mason / Bricklaying",
+    "tile_flooring": "Tile & Flooring Work",
+    "plastering": "Plastering & Cementing",
+    "waterproofing": "Roof Waterproofing & Leak Repair",
+    "false_ceiling": "False Ceiling Installation",
+    "welding": "Steel & Iron Grillwork (Welding)",
+    "renovation": "Bathroom / Kitchen Renovation",
+    "demolition": "Demolition & Debris Removal",
+    "home_shifting": "Home Shifting (Local)",
+    "office_shifting": "Office / Commercial Shifting",
+    "furniture_assembly": "Furniture Disassembly & Reassembly",
+    "packing": "Packing & Unpacking Service",
+    "loading": "Loading & Unloading Labor",
+    "vehicle_transport": "Vehicle Transport (Bike/Car Carrier)",
+    "cctv_install": "CCTV Camera Installation",
+    "cctv_repair": "CCTV Camera Repair & Maintenance",
+    "dvr_nvr": "DVR/NVR Setup & Configuration",
+    "alarm": "Security Alarm Installation",
+    "video_doorbell": "Video Doorbell Installation",
+    "access_control": "Access Control / Biometric Lock Installation",
+    "intercom": "Intercom System Setup",
+    "cable_wiring": "Cable Routing & Wiring"
   }
 }

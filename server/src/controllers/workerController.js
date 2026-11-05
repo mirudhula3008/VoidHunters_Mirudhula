@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Review = require('../models/Review');
-const { categoryIds } = require('../data/categories');
+const { categoryIds, jobsFor } = require('../data/categories');
 
 const PUBLIC_WORKER_FIELDS = {
   password: 0,
@@ -19,7 +19,7 @@ function toNumber(value) {
   return Number.isFinite(n) ? n : NaN;
 }
 
-// GET /api/workers?lat=&lng=&category=&radius=&minPrice=&maxPrice=&minRating=&available=
+// GET /api/workers?lat=&lng=&category=&job=&radius=&minPrice=&maxPrice=&minRating=&available=
 // Returns verified workers near the point, nearest first, with `distance` in metres.
 async function searchWorkers(req, res, next) {
   try {
@@ -36,7 +36,7 @@ async function searchWorkers(req, res, next) {
     const minPrice = toNumber(req.query.minPrice);
     const maxPrice = toNumber(req.query.maxPrice);
     const minRating = toNumber(req.query.minRating);
-    const { category } = req.query;
+    const { category, job } = req.query;
 
     // Seeded and older accounts may have no accountStatus; treat that as active.
     const match = { role: 'worker', isVerified: true, accountStatus: { $nin: ['suspended', 'blocked', 'under_review'] } };
@@ -48,16 +48,33 @@ async function searchWorkers(req, res, next) {
       match.serviceCategory = category;
     }
 
+    if (job && !jobsFor(category).some((j) => j.id === job)) {
+      return res.status(400).json({ message: `Unknown job "${job}"` });
+    }
+
     if (req.query.available === 'true') match.availability = true;
     if (minRating > 0) match.averageRating = { $gte: minRating };
 
-    // A worker matches the price filter if at least one service falls in range.
+    // A worker matches if at least one service is the chosen job and falls in the price range.
     const priceRange = {};
     if (minPrice >= 0) priceRange.$gte = minPrice;
     if (maxPrice >= 0) priceRange.$lte = maxPrice;
-    if (Object.keys(priceRange).length) {
-      match.services = { $elemMatch: { price: priceRange } };
+    const serviceMatch = {};
+    if (job) serviceMatch.job = job;
+    if (Object.keys(priceRange).length) serviceMatch.price = priceRange;
+    if (Object.keys(serviceMatch).length) {
+      match.services = { $elemMatch: serviceMatch };
     }
+
+    // With a job chosen, the price shown is that job's price, not the worker's whole range.
+    const prices = job
+      ? {
+          $map: {
+            input: { $filter: { input: '$services', cond: { $eq: ['$$this.job', job] } } },
+            in: '$$this.price',
+          },
+        }
+      : '$services.price';
 
     const workers = await User.aggregate([
       {
@@ -72,8 +89,8 @@ async function searchWorkers(req, res, next) {
       { $project: PUBLIC_WORKER_FIELDS },
       {
         $addFields: {
-          minPrice: { $min: '$services.price' },
-          maxPrice: { $max: '$services.price' },
+          minPrice: { $min: prices },
+          maxPrice: { $max: prices },
         },
       },
       { $limit: 50 },

@@ -11,6 +11,7 @@ const User = require('../models/User');
 const Review = require('../models/Review');
 const Booking = require('../models/Booking');
 const { recalculateWorkerRating } = require('../utils/ratings');
+const { jobsFor } = require('../data/categories');
 
 const SEED_DOMAIN = '@seed.local';
 
@@ -58,26 +59,37 @@ const WORKERS = [
   ['Rahim Basha', 'appliance_repair', 'Kilpauk', 13.0825, 80.2428, true, false, 11,
     [['TV repair', 650], ['Washing machine repair', 400], ['Geyser repair', 450]]],
 
-  ['Venkatesh Iyer', 'vehicle_rental', 'Alwarpet', 13.0335, 80.2547, true, true, 8,
-    [['Scooter rental', 400, 'per day'], ['Car rental (hatchback)', 1800, 'per day'], ['Car with driver (sedan)', 3200, 'per day']]],
-  ['Farooq Ahmed', 'vehicle_rental', 'Triplicane', 13.0588, 80.2756, false, true, 5,
-    [['Bike rental (150cc)', 550, 'per day'], ['Car rental (SUV)', 3000, 'per day']]],
-  ['Kavitha Raman', 'vehicle_rental', 'Thoraipakkam', 12.9416, 80.2362, true, true, 4,
-    [['Scooter rental', 350, 'per day'], ['Car rental (sedan)', 2200, 'per day']]],
+  // In categories with a job list, service names must match a job name in data/categories.js.
+  ['Venkatesh Iyer', 'construction', 'Alwarpet', 13.0335, 80.2547, true, true, 16,
+    [['Mason / Bricklaying', 900, 'per day'], ['Plastering & Cementing', 35, 'per sq ft'], ['Bathroom / Kitchen Renovation', 450, 'per sq ft'], ['Demolition & Debris Removal', 2500]]],
+  ['Balaji Sundaram', 'construction', 'Vadapalani', 13.05, 80.2121, true, true, 9,
+    [['Tile & Flooring Work', 55, 'per sq ft'], ['Mason / Bricklaying', 850, 'per day'], ['Bathroom / Kitchen Renovation', 400, 'per sq ft']]],
+  ['Naveen Raj', 'construction', 'Teynampet', 13.0418, 80.2508, false, true, 6,
+    [['Roof Waterproofing & Leak Repair', 40, 'per sq ft'], ['False Ceiling Installation', 85, 'per sq ft'], ['Plastering & Cementing', 30, 'per sq ft']]],
+  ['Imran Khan', 'construction', 'Aminjikarai', 13.0702, 80.2248, true, true, 11,
+    [['Steel & Iron Grillwork (Welding)', 180, 'per sq ft'], ['Demolition & Debris Removal', 3000], ['False Ceiling Installation', 90, 'per sq ft']]],
+  ['Mani Vannan', 'construction', 'Kodambakkam', 13.0521, 80.2255, false, true, 13,
+    [['Tile & Flooring Work', 60, 'per sq ft'], ['Roof Waterproofing & Leak Repair', 45, 'per sq ft'], ['Steel & Iron Grillwork (Welding)', 200, 'per sq ft']]],
 
-  ['Balaji Sundaram', 'car_wash', 'Vadapalani', 13.05, 80.2121, true, true, 6,
-    [['Exterior car wash', 300], ['Interior + exterior wash', 600], ['Full car detailing', 2500]]],
-  ['Naveen Raj', 'car_wash', 'Pallikaranai', 12.9349, 80.2137, false, true, 3,
-    [['Doorstep car wash', 350], ['Foam wash + wax', 800]]],
-  ['Imran Khan', 'car_wash', 'Mogappair', 13.0837, 80.175, true, true, 5,
-    [['Exterior car wash', 280], ['Interior vacuum + wash', 550]]],
+  ['Farooq Ahmed', 'packers_movers', 'Triplicane', 13.0588, 80.2756, false, true, 8,
+    [['Home Shifting (Local)', 4500], ['Office / Commercial Shifting', 4900], ['Packing & Unpacking Service', 1500], ['Loading & Unloading Labor', 800]]],
+  ['Ramesh Babu', 'packers_movers', 'West Mambalam', 13.039, 80.221, true, true, 6,
+    [['Home Shifting (Local)', 3800], ['Furniture Disassembly & Reassembly', 900], ['Packing & Unpacking Service', 1200], ['Vehicle Transport (Bike/Car Carrier)', 2500]]],
+  ['Siva Prakash', 'packers_movers', 'Perambur', 13.118, 80.233, false, true, 5,
+    [['Loading & Unloading Labor', 700], ['Vehicle Transport (Bike/Car Carrier)', 2800], ['Office / Commercial Shifting', 4500]]],
+  ['Kumaresan Pillai', 'packers_movers', 'Purasawalkam', 13.0878, 80.2545, true, true, 10,
+    [['Furniture Disassembly & Reassembly', 1000], ['Office / Commercial Shifting', 4800], ['Loading & Unloading Labor', 750]]],
+  ['Gopi Nathan', 'packers_movers', 'Medavakkam', 12.9171, 80.1923, true, false, 4,
+    [['Home Shifting (Local)', 3500], ['Loading & Unloading Labor', 650]]],
 
-  ['Ramesh Babu', 'bike_wash', 'West Mambalam', 13.039, 80.221, true, true, 4,
-    [['Bike wash', 120], ['Bike foam wash + polish', 250]]],
-  ['Siva Prakash', 'bike_wash', 'Ambattur', 13.1143, 80.1548, false, true, 3,
-    [['Doorstep bike wash', 150], ['Chain cleaning + lube', 200]]],
-  ['Gopi Nathan', 'bike_wash', 'Medavakkam', 12.9171, 80.1923, true, false, 2,
-    [['Bike wash', 100], ['Bike wash + polish', 220]]],
+  ['Kavitha Raman', 'cctv_security', 'Mylapore', 13.0339, 80.2619, true, true, 7,
+    [['CCTV Camera Repair & Maintenance', 500], ['DVR/NVR Setup & Configuration', 800], ['Video Doorbell Installation', 900], ['Intercom System Setup', 1800]]],
+  ['Priya Natarajan', 'cctv_security', 'Nungambakkam', 13.0614, 80.2401, false, true, 6,
+    [['CCTV Camera Installation', 1200], ['Security Alarm Installation', 2000], ['Access Control / Biometric Lock Installation', 2500], ['Video Doorbell Installation', 850]]],
+  ['Dhanush Kannan', 'cctv_security', 'T. Nagar', 13.0405, 80.2337, true, true, 9,
+    [['CCTV Camera Installation', 1000], ['CCTV Camera Repair & Maintenance', 450], ['Cable Routing & Wiring', 25, 'per sq ft'], ['DVR/NVR Setup & Configuration', 750]]],
+  ['Rajesh Menon', 'cctv_security', 'Kilpauk', 13.0838, 80.2401, false, true, 12,
+    [['Security Alarm Installation', 1800], ['Access Control / Biometric Lock Installation', 2800], ['Intercom System Setup', 1600], ['Cable Routing & Wiring', 30, 'per sq ft']]],
 
   ['Muthu Kumar', 'mechanic', 'Guindy', 13.0108, 80.2133, true, true, 14,
     [['Bike general service', 600], ['Car general service', 2500], ['Breakdown assistance', 500], ['Puncture repair', 100]]],
@@ -88,6 +100,8 @@ const WORKERS = [
   ['Karim Sheikh', 'mechanic', 'Perungudi', 12.9654, 80.2461, true, true, 7,
     [['Breakdown towing', 1200], ['Puncture repair', 120], ['Car general service', 2200]]],
 ];
+
+const FEMALE_WORKERS = new Set(['Lakshmi Devi', 'Meena Kumari', 'Selvi Rajan', 'Kavitha Raman', 'Priya Natarajan']);
 
 const CUSTOMERS = [
   ['Arun Prasad', 13.0475, 80.2400],
@@ -113,9 +127,9 @@ const CATEGORY_LABEL = {
   painting: 'painting',
   cleaning: 'cleaning',
   appliance_repair: 'appliance repair',
-  vehicle_rental: 'vehicle rental',
-  car_wash: 'car wash',
-  bike_wash: 'bike wash',
+  construction: 'construction',
+  packers_movers: 'packing and moving',
+  cctv_security: 'CCTV and security',
   mechanic: 'vehicle repair',
 };
 
@@ -151,11 +165,18 @@ async function seed() {
         phone: `94440000${String(i).padStart(2, '0')}`,
         password,
         role: 'worker',
-        profilePhoto: `https://i.pravatar.cc/300?img=${(i % 60) + 11}`,
+        // No photo: the app draws a picture that matches the worker's gender.
+        profilePhoto: '',
+        gender: FEMALE_WORKERS.has(name) ? 'female' : 'male',
         location: { type: 'Point', coordinates: [lng, lat] },
         address: `${area}, Chennai`,
         serviceCategory: category,
-        services: services.map(([serviceName, price, unit = 'per job']) => ({ name: serviceName, price, unit })),
+        services: services.map(([serviceName, price, unit = 'per job']) => ({
+          name: serviceName,
+          price,
+          unit,
+          job: jobsFor(category).find((j) => j.name === serviceName)?.id,
+        })),
         bio: `${years} years of experience in ${CATEGORY_LABEL[category]} work around ${area} and nearby areas.`,
         experienceYears: years,
         isNegotiable: negotiable,

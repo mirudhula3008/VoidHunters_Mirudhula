@@ -12,7 +12,7 @@ const TIME_RE = /^([01]\d|2[0-3]):[0-5]\d$/;
 const DAY_MS = 24 * 60 * 60 * 1000;
 const MAX_DAYS_AHEAD = 60;
 
-const PARTY_FIELDS = 'name phone profilePhoto serviceCategory averageRating totalReviews address';
+const PARTY_FIELDS = 'name phone profilePhoto gender serviceCategory averageRating totalReviews address';
 
 // Phone numbers are shared only once the worker has accepted the job.
 const PHONE_VISIBLE = ['accepted', 'in_progress', 'completed'];

@@ -3,7 +3,7 @@ const { LANGUAGES } = require('../models/User');
 const { categoryIds } = require('../data/categories');
 const { storeFile } = require('../utils/storage');
 const { asyncHandler, httpError } = require('../utils/http');
-const { PHONE_RE, toBool, parseLocation, parseServices } = require('../utils/validation');
+const { PHONE_RE, toBool, parseLocation, parseServices, applyCategoryJobs } = require('../utils/validation');
 
 // GET /api/users/profile
 const getProfile = asyncHandler(async (req, res) => {
@@ -34,8 +34,12 @@ const updateProfile = asyncHandler(async (req, res) => {
       if (!categoryIds.includes(body.serviceCategory)) throw httpError(400, 'Please choose a valid service category');
       user.serviceCategory = body.serviceCategory;
     }
+    if (body.gender) {
+      if (!User.GENDERS.includes(body.gender)) throw httpError(400, 'Please select a valid gender');
+      user.gender = body.gender;
+    }
     const services = parseServices(body.services);
-    if (services) user.services = services;
+    if (services) user.services = applyCategoryJobs(services, user.serviceCategory);
     if (body.bio !== undefined) user.bio = String(body.bio).trim();
     if (body.experienceYears !== undefined) user.experienceYears = Math.max(0, Number(body.experienceYears) || 0);
     if (body.isNegotiable !== undefined) user.isNegotiable = toBool(body.isNegotiable);

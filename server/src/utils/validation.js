@@ -1,4 +1,5 @@
 const { httpError } = require('./http');
+const { jobsFor } = require('../data/categories');
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_RE = /^[+\d][\d\s-]{6,16}$/;
@@ -35,8 +36,20 @@ function parseServices(raw) {
     const price = Number(s?.price);
     if (!name) throw httpError(400, `Service ${i + 1} needs a name`);
     if (!Number.isFinite(price) || price < 0) throw httpError(400, `Service "${name}" needs a valid price`);
-    return { name, price, unit: String(s?.unit || 'per job').trim() };
+    return { name, price, unit: String(s?.unit || 'per job').trim(), job: s?.job };
   });
 }
 
-module.exports = { EMAIL_RE, PHONE_RE, toBool, parseLocation, parseServices };
+// In a category with a job list every service must be one of its jobs (and uses the job's name);
+// elsewhere services are free text and carry no job.
+function applyCategoryJobs(services, categoryId) {
+  const jobs = jobsFor(categoryId);
+  return services.map(({ job: jobId, ...service }) => {
+    if (!jobs.length) return service;
+    const job = jobs.find((j) => j.id === jobId);
+    if (!job) throw httpError(400, 'Please choose a job from the list for each service');
+    return { ...service, job: job.id, name: job.name };
+  });
+}
+
+module.exports = { EMAIL_RE, PHONE_RE, toBool, parseLocation, parseServices, applyCategoryJobs };

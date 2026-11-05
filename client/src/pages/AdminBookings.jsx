@@ -8,6 +8,7 @@ import { errorMessage } from '../api/client';
 import { formatPrice } from '../utils/format';
 import { formatScheduleDate, formatTime } from '../utils/bookings';
 import { useLanguage } from '../context/LanguageContext';
+import { serviceLabel } from '../data/categories';
 
 const FILTERS = [
   { id: 'all', label: 'admin.all' },
@@ -89,7 +90,7 @@ export default function AdminBookings() {
                         <span className="block text-xs">{formatTime(b.scheduledTime)}</span>
                       </td>
                       <td className="px-5 py-3">
-                        <p className="font-medium text-navy">{b.serviceName}</p>
+                        <p className="font-medium text-navy">{serviceLabel(b.serviceName, t)}</p>
                         <p className="text-xs text-slate-500">{t(`services.${b.serviceCategory}`)}</p>
                       </td>
                       <td className="px-5 py-3 text-slate-600">

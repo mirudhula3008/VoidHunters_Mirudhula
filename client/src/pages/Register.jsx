@@ -6,12 +6,14 @@ import ServicesEditor, { cleanServices } from '../components/ServicesEditor';
 import { homePathFor, useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { errorMessage } from '../api/client';
-import { CATEGORIES } from '../data/categories';
+import { CATEGORIES, jobsFor } from '../data/categories';
 
 const ROLES = [
   { id: 'customer', icon: '🏠', title: 'auth.needService', text: 'auth.needServiceText' },
   { id: 'worker', icon: '🧰', title: 'auth.offerService', text: 'auth.offerServiceText' },
 ];
+
+const GENDERS = ['male', 'female', 'other'];
 
 export default function Register() {
   const { user, register } = useAuth();
@@ -28,6 +30,7 @@ export default function Register() {
     confirmPassword: '',
     address: '',
     serviceCategory: '',
+    gender: '',
     experienceYears: '',
     bio: '',
     isNegotiable: false,
@@ -49,6 +52,7 @@ export default function Register() {
     if (form.password !== form.confirmPassword) return t('auth.errors.passwordMismatch');
     if (role === 'worker') {
       if (!form.serviceCategory) return t('auth.errors.chooseCategory');
+      if (!form.gender) return t('auth.errors.chooseGender');
       if (!location) return t('auth.errors.shareLocation');
       if (!idProof) return t('auth.errors.uploadId');
     }
@@ -73,6 +77,7 @@ export default function Register() {
     if (profilePhoto) data.append('profilePhoto', profilePhoto);
     if (role === 'worker') {
       data.append('serviceCategory', form.serviceCategory);
+      data.append('gender', form.gender);
       data.append('experienceYears', form.experienceYears || 0);
       data.append('bio', form.bio);
       data.append('isNegotiable', form.isNegotiable);
@@ -179,6 +184,14 @@ export default function Register() {
                   value={form.experienceYears}
                   onChange={set('experienceYears')}
                 />
+                <FormField label={t('auth.gender')} as="select" value={form.gender} onChange={set('gender')} required>
+                  <option value="">{t('auth.choose')}</option>
+                  {GENDERS.map((g) => (
+                    <option key={g} value={g}>
+                      {t(`auth.genders.${g}`)}
+                    </option>
+                  ))}
+                </FormField>
               </div>
               <FormField
                 label={t('auth.about')}
@@ -192,7 +205,7 @@ export default function Register() {
               <div>
                 <span className="text-sm font-medium text-slate-700">{t('auth.servicesPrices')}</span>
                 <p className="mb-2 text-xs text-slate-400">{t('auth.servicesLater')}</p>
-                <ServicesEditor services={services} onChange={setServices} />
+                <ServicesEditor services={services} onChange={setServices} jobs={jobsFor(form.serviceCategory)} />
               </div>
 
               <label className="flex items-center gap-2 text-sm text-slate-700">

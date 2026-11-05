@@ -3,7 +3,7 @@ const User = require('../models/User');
 const { categoryIds } = require('../data/categories');
 const { storeFile } = require('../utils/storage');
 const { asyncHandler, httpError } = require('../utils/http');
-const { EMAIL_RE, PHONE_RE, toBool, parseLocation, parseServices } = require('../utils/validation');
+const { EMAIL_RE, PHONE_RE, toBool, parseLocation, parseServices, applyCategoryJobs } = require('../utils/validation');
 
 const signToken = (user) =>
   jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
@@ -42,12 +42,14 @@ const register = asyncHandler(async (req, res) => {
   if (role === 'worker') {
     const { serviceCategory } = req.body;
     if (!categoryIds.includes(serviceCategory)) throw httpError(400, 'Please choose a valid service category');
+    if (!User.GENDERS.includes(req.body.gender)) throw httpError(400, 'Please select a valid gender');
     if (!data.location) throw httpError(400, 'Workers must share their location so customers can find them');
     if (!files.idProof?.[0]) throw httpError(400, 'ID proof is required for workers');
 
     Object.assign(data, {
       serviceCategory,
-      services: parseServices(req.body.services) || [],
+      gender: req.body.gender,
+      services: applyCategoryJobs(parseServices(req.body.services) || [], serviceCategory),
       bio: req.body.bio?.trim() || '',
       experienceYears: Number(req.body.experienceYears) || 0,
       isNegotiable: toBool(req.body.isNegotiable),

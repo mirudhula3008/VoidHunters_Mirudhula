@@ -5,6 +5,7 @@ import { getBooking } from '../api/bookings';
 import { createPayment, getPaymentForBooking, processPayment } from '../api/payments';
 import { errorMessage } from '../api/client';
 import { useLanguage } from '../context/LanguageContext';
+import { serviceLabel } from '../data/categories';
 import { formatPrice } from '../utils/format';
 import { CLOSED, formatScheduleDate, formatTime } from '../utils/bookings';
 
@@ -294,7 +295,7 @@ export default function PaymentPage() {
             <h2 className="font-semibold text-navy">{t('payment.orderSummary')}</h2>
             <dl className="mt-4 space-y-2.5 text-sm">
               <Row label={t('payment.worker')} value={workerName} />
-              <Row label={t('payment.service')} value={booking.serviceName} />
+              <Row label={t('payment.service')} value={serviceLabel(booking.serviceName, t)} />
               <Row label={t('payment.when')} value={`${formatScheduleDate(booking.scheduledDate)}, ${formatTime(booking.scheduledTime)}`} />
             </dl>
             <div className="mt-4 flex items-baseline justify-between border-t border-slate-100 pt-4">
@@ -368,7 +369,7 @@ function SuccessScreen({ payment, booking, onDone }) {
           <Row label={t('payment.amount')} value={formatPrice(payment?.amount ?? booking.agreedPrice)} strong />
           <Row label={t('payment.method')} value={paymentMethodText(payment, t)} />
           <Row label={t('payment.transactionId')} value={<span className="font-mono">{payment?.transactionId}</span>} />
-          <Row label={t('payment.service')} value={booking.serviceName} />
+          <Row label={t('payment.service')} value={serviceLabel(booking.serviceName, t)} />
           {payment?.completedAt && <Row label={t('payment.paidOn')} value={new Date(payment.completedAt).toLocaleString('en-IN')} />}
         </dl>
 

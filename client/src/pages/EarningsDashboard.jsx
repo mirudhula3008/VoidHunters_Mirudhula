@@ -4,6 +4,7 @@ import EarningsChart from '../components/EarningsChart';
 import { getEarningsHistory, getEarningsSummary, getEarningsTransactions } from '../api/earnings';
 import { errorMessage } from '../api/client';
 import { useLanguage, getLocale } from '../context/LanguageContext';
+import { serviceLabel } from '../data/categories';
 import { formatDate, formatPrice } from '../utils/format';
 
 const PERIODS = [
@@ -183,7 +184,7 @@ export default function EarningsDashboard() {
                     <tr key={row._id}>
                       <td className="whitespace-nowrap px-5 py-3 text-slate-500">{formatDate(row.earnedAt)}</td>
                       <td className="px-5 py-3">
-                        <p className="font-medium text-navy">{row.serviceName}</p>
+                        <p className="font-medium text-navy">{serviceLabel(row.serviceName, t)}</p>
                         <p className="text-xs text-slate-500">{row.customerName}</p>
                       </td>
                       <td className="whitespace-nowrap px-5 py-3 text-slate-600">{methodText(row, t)}</td>
@@ -203,7 +204,7 @@ export default function EarningsDashboard() {
               {tx.transactions.map((row) => (
                 <li key={row._id} className="flex items-start justify-between gap-3 px-5 py-4">
                   <div className="min-w-0">
-                    <p className="truncate font-medium text-navy">{row.serviceName}</p>
+                    <p className="truncate font-medium text-navy">{serviceLabel(row.serviceName, t)}</p>
                     <p className="text-xs text-slate-500">
                       {row.customerName} · {formatDate(row.earnedAt)} · {methodText(row, t)}
                     </p>

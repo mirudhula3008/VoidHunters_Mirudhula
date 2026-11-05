@@ -3,8 +3,8 @@
 **Skilled hands. Trusted work. Right nearby.**
 
 FixIT is a hyperlocal, on-demand platform that connects people with **verified blue-collar workers near
-them**: plumbers, electricians, carpenters, painters, cleaners, appliance technicians, mechanics, car and
-bike wash, and vehicle rental. Customers see nearby workers on a map with **transparent prices and real
+them**: plumbers, electricians, carpenters, painters, cleaners, appliance technicians, mechanics, construction
+workers, packers and movers, and CCTV and security technicians. Customers see nearby workers on a map with **transparent prices and real
 reviews**, book a time slot, pay, and rate the job. Workers get bookings from their neighbourhood, set
 their own (optionally negotiable) prices and track their earnings. Admins verify workers and keep the
 platform safe.
@@ -41,7 +41,11 @@ The whole app works in **English, Tamil (தமிழ்), Hindi (हिन्�
 
 ### For customers
 - **10 service categories:** plumbing, electrical, carpentry, painting, cleaning, appliance repair,
-  vehicle rental, car wash, bike wash and mechanic.
+  construction, packers & movers, CCTV & security and mechanic.
+- **Choose a job first:** construction, packers & movers and CCTV & security open a list of jobs (for
+  example *Mason / Bricklaying*), and only workers who do that job are shown, with that job's price.
+- **Profile pictures by gender:** a worker with no uploaded photo gets a drawn picture that matches
+  their gender. It works offline. An uploaded photo always takes priority.
 - **Find workers near you** on an OpenStreetMap map and in a list, nearest first. Results show the
   distance, rating, price range, availability and a *Negotiable* badge.
 - **Filters and sorting:** distance (1–50 km), maximum price, minimum rating and *available now*.
@@ -98,11 +102,13 @@ Created by the seed scripts (see [Getting started](#6-getting-started)).
 | Customer | `divya.shankar@seed.local`, `harish.venkat@seed.local` | `password123` |
 | Worker (plumber, negotiable) | `ravi.kumar@seed.local` | `password123` |
 | Worker (mechanic) | `muthu.kumar@seed.local` | `password123` |
-| Worker (vehicle rental) | `venkatesh.iyer@seed.local` | `password123` |
+| Worker (construction) | `venkatesh.iyer@seed.local` | `password123` |
+| Worker (packers & movers) | `farooq.ahmed@seed.local` | `password123` |
+| Worker (CCTV & security) | `priya.natarajan@seed.local` | `password123` |
 | Worker (appliance repair) | `arjun.krishnan@seed.local` | `password123` |
 
-All 31 sample workers follow the pattern `firstname.lastname@seed.local` with `password123`. They are
-spread across Chennai (T. Nagar, Adyar, Velachery, Guindy, Porur, Tambaram and more), 3–4 per category.
+All 36 sample workers follow the pattern `firstname.lastname@seed.local` with `password123`. They are
+spread across Chennai (T. Nagar, Adyar, Velachery, Guindy, Porur, Tambaram and more), 3–5 per category.
 A few are marked *Busy* so you can see that state.
 
 **Test payment card:** `4000 0000 0000 0002` is always declined. Any other valid-looking card succeeds.
@@ -227,7 +233,7 @@ Open `server/.env`, set `MONGO_URI` (the default works with a local MongoDB) and
 any long random string. Then:
 ```bash
 npm install
-npm run seed          # 31 workers across 10 categories, 3 customers, sample reviews
+npm run seed          # 36 workers across 10 categories, 3 customers, sample reviews
 npm run seed:demo     # ~6 months of completed, paid jobs (fills earnings and admin charts)
 npm run seed:admin    # admin account from ADMIN_EMAIL / ADMIN_PASSWORD
 npm run dev           # API on http://localhost:5000

@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import Avatar from '../components/Avatar';
 import FormField from '../components/FormField';
 import LocationPicker from '../components/LocationPicker';
 import ServicesEditor, { cleanServices } from '../components/ServicesEditor';
@@ -6,7 +7,9 @@ import { useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { updateProfile, uploadIdProof, uploadProfilePhoto } from '../api/auth';
 import { errorMessage } from '../api/client';
-import { CATEGORIES } from '../data/categories';
+import { CATEGORIES, jobsFor } from '../data/categories';
+
+const GENDERS = ['male', 'female', 'other'];
 
 const toLatLng = (location) =>
   location?.coordinates?.length === 2 ? { lat: location.coordinates[1], lng: location.coordinates[0] } : null;
@@ -22,6 +25,7 @@ export default function Profile() {
     phone: user.phone,
     address: user.address || '',
     serviceCategory: user.serviceCategory || '',
+    gender: user.gender || '',
     experienceYears: user.experienceYears ?? 0,
     bio: user.bio || '',
     isNegotiable: Boolean(user.isNegotiable),
@@ -45,6 +49,7 @@ export default function Profile() {
       if (isWorker) {
         Object.assign(payload, {
           serviceCategory: form.serviceCategory,
+          gender: form.gender,
           experienceYears: Number(form.experienceYears) || 0,
           bio: form.bio,
           isNegotiable: form.isNegotiable,
@@ -117,13 +122,21 @@ export default function Profile() {
                 value={form.experienceYears}
                 onChange={set('experienceYears')}
               />
+              <FormField label={t('auth.gender')} as="select" value={form.gender} onChange={set('gender')}>
+                <option value="">{t('auth.choose')}</option>
+                {GENDERS.map((g) => (
+                  <option key={g} value={g}>
+                    {t(`auth.genders.${g}`)}
+                  </option>
+                ))}
+              </FormField>
             </div>
             <FormField label={t('auth.about')} as="textarea" rows={3} value={form.bio} onChange={set('bio')} />
 
             <div>
               <span className="text-sm font-medium text-slate-700">{t('auth.servicesPrices')}</span>
               <div className="mt-2">
-                <ServicesEditor services={services} onChange={setServices} />
+                <ServicesEditor services={services} onChange={setServices} jobs={jobsFor(form.serviceCategory)} />
               </div>
             </div>
           </section>
@@ -170,11 +183,7 @@ function ProfileHeader({ user, onUpdated }) {
   return (
     <section className="flex flex-col items-center gap-4 card p-6 sm:flex-row">
       <div className="relative">
-        <img
-          src={user.profilePhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=192`}
-          alt=""
-          className="h-24 w-24 rounded-full bg-slate-100 object-cover"
-        />
+        <Avatar person={user} className="h-24 w-24" textClass="text-4xl" />
         <button
           type="button"
           onClick={() => inputRef.current?.click()}

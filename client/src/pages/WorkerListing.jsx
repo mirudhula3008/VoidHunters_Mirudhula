@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import FilterSidebar, { DEFAULT_FILTERS, SORTS } from '../components/FilterSidebar';
 import LocationBanner from '../components/LocationBanner';
 import WorkerCard from '../components/WorkerCard';
@@ -8,12 +8,21 @@ import useGeolocation from '../hooks/useGeolocation';
 import { useLanguage } from '../context/LanguageContext';
 import { searchWorkers } from '../api/discovery';
 import { errorMessage } from '../api/client';
-import { categoryIds } from '../data/categories';
+import { categoryIds, jobsFor } from '../data/categories';
 
 export default function WorkerListing() {
-  const { t } = useLanguage();
   const [searchParams] = useSearchParams();
   const category = searchParams.get('category') || '';
+  const job = searchParams.get('job') || '';
+  const jobs = jobsFor(category);
+
+  // These categories show workers only after a job is chosen.
+  if (jobs.length && !jobs.some((j) => j.id === job)) return <Navigate to={`/services/${category}`} replace />;
+  return <WorkerResults category={category} job={jobs.length ? job : ''} />;
+}
+
+function WorkerResults({ category, job }) {
+  const { t } = useLanguage();
   const location = useGeolocation();
   const { coords, status } = location;
 
@@ -38,6 +47,7 @@ export default function WorkerListing() {
         lat: coords.lat,
         lng: coords.lng,
         category: category || undefined,
+        job: job || undefined,
         radius,
         maxPrice,
         minRating: minRating || undefined,
@@ -51,19 +61,21 @@ export default function WorkerListing() {
     return () => clearTimeout(timer);
     // Sorting is client-side, so it isn't a dependency; t only changes the fallback message.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coords.lat, coords.lng, status, category, radius, maxPrice, minRating, available]);
+  }, [coords.lat, coords.lng, status, category, job, radius, maxPrice, minRating, available]);
 
   const sorted = useMemo(() => [...workers].sort(SORTS[filters.sort] || SORTS.nearest), [workers, filters.sort]);
 
-  const title = categoryIds.includes(category)
-    ? t('discovery.nearYou', { category: t(`services.${category}`) })
-    : t('discovery.allNearYou');
+  const title = job
+    ? t('discovery.nearYou', { category: t(`jobs.${job}`) })
+    : categoryIds.includes(category)
+      ? t('discovery.nearYou', { category: t(`services.${category}`) })
+      : t('discovery.allNearYou');
   const center = [coords.lat, coords.lng];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <Link to="/dashboard" className="text-sm text-blue-600 hover:underline">
-        {t('discovery.allServices')}
+      <Link to={job ? `/services/${category}` : '/dashboard'} className="text-sm text-blue-600 hover:underline">
+        {job ? t('discovery.allJobs', { category: t(`services.${category}`) }) : t('discovery.allServices')}
       </Link>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-2">
         <div>
@@ -118,7 +130,7 @@ export default function WorkerListing() {
             {!error && !loading && workers.length > 0 && (
               <div className="grid gap-3 md:grid-cols-2">
                 {sorted.map((w) => (
-                  <WorkerCard key={w._id} worker={w} highlighted={w._id === hoveredId} onHover={setHoveredId} />
+                  <WorkerCard key={w._id} worker={w} job={job} highlighted={w._id === hoveredId} onHover={setHoveredId} />
                 ))}
               </div>
             )}

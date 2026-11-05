@@ -9,12 +9,15 @@ const serviceSchema = new mongoose.Schema(
     name: { type: String, required: true, trim: true },
     price: { type: Number, required: true, min: 0 },
     unit: { type: String, default: 'per job' },
+    // Job id for categories with a job list (see data/categories.js).
+    job: { type: String },
   },
   { _id: true }
 );
 
 const ACCOUNT_STATUSES = ['active', 'suspended', 'blocked', 'under_review'];
 const LANGUAGES = ['en', 'ta', 'hi', 'bn'];
+const GENDERS = ['male', 'female', 'other'];
 
 const statusChangeSchema = new mongoose.Schema(
   {
@@ -35,6 +38,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true, minlength: 6, select: false },
     role: { type: String, enum: ['customer', 'worker', 'admin'], default: 'customer' },
     profilePhoto: { type: String, default: '' },
+    // Picks the default profile picture when no photo was uploaded.
+    gender: { type: String, enum: GENDERS },
 
     // GeoJSON point: coordinates are [longitude, latitude].
     // No defaults, so users without a location don't break the 2dsphere index.
@@ -91,3 +96,4 @@ userSchema.set('toJSON', {
 module.exports = mongoose.model('User', userSchema);
 module.exports.ACCOUNT_STATUSES = ACCOUNT_STATUSES;
 module.exports.LANGUAGES = LANGUAGES;
+module.exports.GENDERS = GENDERS;

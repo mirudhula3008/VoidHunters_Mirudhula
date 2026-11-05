@@ -7,7 +7,9 @@ import { ACCOUNT_STATUS, AccountStatusBadge, dateTime, shortDate } from '../comp
 import { getWorkerAdminProfile, setWorkerStatus, uploadEvidence } from '../api/admin';
 import { errorMessage } from '../api/client';
 import { formatPrice } from '../utils/format';
+import Avatar from '../components/Avatar';
 import { useLanguage } from '../context/LanguageContext';
+import { serviceLabel } from '../data/categories';
 
 const MIN_REASON = 10;
 const RESTRICTIVE = ['suspended', 'blocked'];
@@ -71,13 +73,7 @@ export default function AdminWorkerDetail() {
         <div className="min-w-0 space-y-6">
           {/* Profile */}
           <section className="card flex flex-col gap-5 p-6 sm:flex-row">
-            {worker.profilePhoto ? (
-              <img src={worker.profilePhoto} alt="" className="h-20 w-20 flex-none rounded-full bg-slate-100 object-cover" />
-            ) : (
-              <span className="flex h-20 w-20 flex-none items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-3xl font-semibold text-white">
-                {worker.name.charAt(0)}
-              </span>
-            )}
+            <Avatar person={worker} className="h-20 w-20" textClass="text-3xl" />
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <AccountStatusBadge status={worker.accountStatus} />
@@ -167,7 +163,7 @@ export default function AdminWorkerDetail() {
                 {worker.recentBookings.map((b) => (
                   <li key={b._id} className="flex flex-wrap items-center justify-between gap-2 px-5 py-3 text-sm">
                     <div className="min-w-0">
-                      <p className="font-medium text-navy">{b.serviceName}</p>
+                      <p className="font-medium text-navy">{serviceLabel(b.serviceName, t)}</p>
                       <p className="text-xs text-slate-500">
                         {b.customerId?.name || t('nav.roles.customer')} · {shortDate(b.scheduledDate)}
                       </p>

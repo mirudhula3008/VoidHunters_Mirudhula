@@ -1,6 +1,8 @@
 import StatusBadge from './StatusBadge';
 import BookingLocationMap from './BookingLocationMap';
+import Avatar from './Avatar';
 import { useLanguage } from '../context/LanguageContext';
+import { serviceLabel } from '../data/categories';
 import { formatPrice } from '../utils/format';
 import { formatScheduleDate, formatTime } from '../utils/bookings';
 
@@ -16,11 +18,7 @@ export default function BookingCard({ booking, viewer, showMap = false, children
   return (
     <article className="card p-4 sm:p-5">
       <div className="flex items-start gap-3">
-        <img
-          src={other?.profilePhoto || `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&size=96`}
-          alt=""
-          className="h-12 w-12 flex-none rounded-full bg-slate-100 object-cover"
-        />
+        <Avatar person={{ ...other, name }} />
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <h3 className="truncate font-semibold text-slate-900">{name}</h3>
@@ -30,7 +28,7 @@ export default function BookingCard({ booking, viewer, showMap = false, children
             </span>
           </div>
           <p className="text-sm text-slate-600">
-            {booking.serviceName} <span className="capitalize text-slate-400">· {booking.serviceCategory}</span>
+            {serviceLabel(booking.serviceName, t)} <span className="text-slate-400">· {t(`services.${booking.serviceCategory}`)}</span>
           </p>
         </div>
       </div>

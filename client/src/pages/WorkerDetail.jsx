@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Check, MapPin } from 'lucide-react';
+import Avatar from '../components/Avatar';
 import StarDisplay from '../components/StarDisplay';
 import WorkerMap from '../components/WorkerMap';
 import ReviewList from '../components/ReviewList';
@@ -10,9 +11,12 @@ import { useLanguage } from '../context/LanguageContext';
 import { getWorker } from '../api/discovery';
 import { errorMessage } from '../api/client';
 import { formatPrice, formatPriceRange } from '../utils/format';
+import { serviceLabel } from '../data/categories';
 
 export default function WorkerDetail() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const job = searchParams.get('job');
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useLanguage();
@@ -55,13 +59,7 @@ export default function WorkerDetail() {
         <div className="space-y-6">
           {/* Profile header */}
           <section className="card flex flex-col gap-5 p-6 sm:flex-row">
-            {worker.profilePhoto ? (
-              <img src={worker.profilePhoto} alt="" className="h-24 w-24 flex-none rounded-full bg-slate-100 object-cover" />
-            ) : (
-              <span className="flex h-24 w-24 flex-none items-center justify-center rounded-full bg-gradient-to-br from-blue-400 to-blue-600 text-4xl font-semibold text-white">
-                {worker.name.charAt(0)}
-              </span>
-            )}
+            <Avatar person={worker} className="h-24 w-24" textClass="text-4xl" />
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="font-display text-3xl text-navy sm:text-4xl">{worker.name}</h1>
@@ -72,7 +70,7 @@ export default function WorkerDetail() {
                 )}
               </div>
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                <span className="badge badge-outline capitalize">{worker.serviceCategory}</span>
+                <span className="badge badge-outline">{t(`services.${worker.serviceCategory}`)}</span>
                 {worker.experienceYears > 0 && <span className="badge badge-outline">{t('worker.yearsExperience', { count: worker.experienceYears })}</span>}
                 {worker.isNegotiable && <span className="badge badge-negotiable">{t('worker.negotiable')}</span>}
               </div>
@@ -94,8 +92,8 @@ export default function WorkerDetail() {
             {worker.services?.length ? (
               <ul className="mt-3 divide-y divide-slate-100">
                 {worker.services.map((s) => (
-                  <li key={s._id || s.name} className="flex items-center justify-between py-3">
-                    <span className="text-slate-700">{s.name}</span>
+                  <li key={s._id || s.name} className={`flex items-center justify-between gap-3 py-3 ${job && s.job === job ? '-mx-3 rounded-lg bg-blue-50 px-3' : ''}`}>
+                    <span className="min-w-0 text-slate-700">{serviceLabel(s.name, t)}</span>
                     <span className="font-bold text-navy">
                       {formatPrice(s.price)} <span className="text-xs font-normal text-slate-400">{unitLabel(s.unit, t)}</span>
                     </span>
@@ -138,7 +136,7 @@ export default function WorkerDetail() {
             ) : (
               <Link
                 to={`/book/${worker._id}`}
-                state={{ worker }}
+                state={{ worker, job }}
                 className={`btn mt-5 w-full py-3 ${worker.availability ? 'btn-amber' : 'pointer-events-none bg-slate-200 text-slate-500'}`}
                 aria-disabled={!worker.availability}
               >
