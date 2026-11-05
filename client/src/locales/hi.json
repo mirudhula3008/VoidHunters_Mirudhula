@@ -30,7 +30,9 @@
       "customer": "ग्राहक",
       "worker": "कामगार",
       "admin": "एडमिन"
-    }
+    },
+    "switchToDark": "डार्क मोड पर जाएं",
+    "switchToLight": "लाइट मोड पर जाएं"
   },
   "hero": {
     "eyebrow": "आस-पास · तुरंत · सत्यापित",

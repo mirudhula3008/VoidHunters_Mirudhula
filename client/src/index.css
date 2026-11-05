@@ -4,6 +4,84 @@
 
 /* FixIT design tokens */
 :root {
+  --c-navy: 10 34 89;
+  --c-navy-bg: 10 34 89;
+  --c-surface: 255 255 255;
+  --c-surface-border: 255 255 255;
+  --c-bg-blue-700: 14 51 128;
+  --c-bg-emerald-700: 31 138 95;
+  --c-bg-rose-700: 190 18 60;
+
+  --c-blue-50: 234 241 252;
+  --c-blue-100: 217 230 250;
+  --c-blue-200: 185 207 243;
+  --c-blue-300: 142 176 232;
+  --c-blue-400: 90 134 214;
+  --c-blue-500: 47 98 190;
+  --c-blue-600: 18 63 156;
+  --c-blue-700: 14 51 128;
+  --c-blue-800: 11 42 107;
+  --c-blue-900: 10 34 89;
+
+  --c-slate-50: 241 245 252;
+  --c-slate-100: 232 238 248;
+  --c-slate-200: 220 229 243;
+  --c-slate-300: 198 210 230;
+  --c-slate-400: 132 150 184;
+  --c-slate-500: 82 98 127;
+  --c-slate-600: 68 84 113;
+  --c-slate-700: 47 64 100;
+  --c-slate-800: 28 46 86;
+  --c-slate-900: 10 34 89;
+
+  --c-emerald-50: 227 245 238;
+  --c-emerald-100: 201 235 221;
+  --c-emerald-200: 166 221 198;
+  --c-emerald-300: 111 199 162;
+  --c-emerald-400: 69 183 136;
+  --c-emerald-500: 42 168 118;
+  --c-emerald-600: 42 168 118;
+  --c-emerald-700: 31 138 95;
+  --c-emerald-800: 23 107 74;
+
+  --c-amber-50: 255 246 232;
+  --c-amber-100: 255 234 204;
+  --c-amber-200: 255 220 168;
+  --c-amber-300: 251 197 106;
+  --c-amber-400: 245 166 35;
+  --c-amber-500: 245 166 35;
+  --c-amber-600: 217 140 14;
+  --c-amber-700: 168 106 6;
+  --c-amber-800: 138 90 11;
+
+  --c-rose-50: 255 241 242;
+  --c-rose-100: 255 228 230;
+  --c-rose-200: 254 205 211;
+  --c-rose-400: 251 113 133;
+  --c-rose-500: 244 63 94;
+  --c-rose-600: 225 29 72;
+  --c-rose-700: 190 18 60;
+  --c-rose-800: 159 18 57;
+
+  --c-red-50: 254 242 242;
+  --c-red-500: 239 68 68;
+  --c-red-600: 220 38 38;
+  --c-red-700: 185 28 28;
+
+  --c-sky-50: 240 249 255;
+  --c-sky-200: 186 230 253;
+  --c-sky-700: 3 105 161;
+  --c-orange-100: 255 237 213;
+  --c-orange-800: 154 52 18;
+  --c-indigo-50: 238 242 255;
+  --c-indigo-200: 199 210 254;
+  --c-indigo-700: 67 56 202;
+
+  --page-bg: linear-gradient(160deg, #f8faff 0%, #f5f8fe 45%, #e4edfb 100%);
+  --decor-corner: #0a2259;
+  --decor-accent: #123f9c;
+  --decor-gap: #ffffff;
+
   --navy: #0a2259;
   --blue: #123f9c;
   --blue-light: #5a86d6;
@@ -29,9 +107,117 @@
   --sp-16: 64px;
 }
 
+
+/* Dark mode: the same names with darker surfaces and lighter text. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --c-navy: 238 242 249;
+  --c-navy-bg: 43 95 208;
+  --c-surface: 22 33 62;
+  --c-surface-border: 42 56 89;
+  --c-bg-blue-700: 58 106 200;
+  --c-bg-emerald-700: 31 138 95;
+  --c-bg-rose-700: 199 62 94;
+
+  --c-blue-50: 28 44 82;
+  --c-blue-100: 32 50 92;
+  --c-blue-200: 39 64 111;
+  --c-blue-300: 59 90 148;
+  --c-blue-400: 127 166 238;
+  --c-blue-500: 110 155 240;
+  --c-blue-600: 79 130 230;
+  --c-blue-700: 143 179 245;
+  --c-blue-800: 169 197 247;
+  --c-blue-900: 220 231 251;
+
+  --c-slate-50: 16 26 51;
+  --c-slate-100: 26 38 69;
+  --c-slate-200: 42 56 89;
+  --c-slate-300: 59 75 112;
+  --c-slate-400: 127 144 178;
+  --c-slate-500: 162 177 204;
+  --c-slate-600: 180 193 216;
+  --c-slate-700: 202 212 230;
+  --c-slate-800: 222 229 241;
+  --c-slate-900: 238 242 249;
+
+  --c-emerald-50: 16 48 42;
+  --c-emerald-100: 21 64 58;
+  --c-emerald-200: 30 90 78;
+  --c-emerald-300: 42 122 102;
+  --c-emerald-400: 60 169 138;
+  --c-emerald-500: 52 185 138;
+  --c-emerald-600: 37 154 114;
+  --c-emerald-700: 95 212 169;
+  --c-emerald-800: 139 227 194;
+
+  --c-amber-50: 51 39 15;
+  --c-amber-100: 61 46 18;
+  --c-amber-200: 87 65 22;
+  --c-amber-300: 138 106 32;
+  --c-amber-600: 217 140 14;
+  --c-amber-700: 247 196 104;
+  --c-amber-800: 249 212 143;
+
+  --c-rose-50: 58 22 32;
+  --c-rose-100: 74 27 40;
+  --c-rose-200: 110 42 59;
+  --c-rose-400: 240 112 138;
+  --c-rose-500: 244 112 138;
+  --c-rose-600: 224 80 111;
+  --c-rose-700: 245 154 174;
+  --c-rose-800: 248 184 198;
+
+  --c-red-50: 58 26 26;
+  --c-red-500: 244 114 114;
+  --c-red-600: 244 114 114;
+  --c-red-700: 245 154 154;
+
+  --c-sky-50: 16 48 63;
+  --c-sky-200: 31 90 115;
+  --c-sky-700: 127 207 240;
+  --c-orange-100: 64 40 15;
+  --c-orange-800: 247 184 120;
+  --c-indigo-50: 32 32 77;
+  --c-indigo-200: 58 58 122;
+  --c-indigo-700: 169 169 247;
+
+  --page-bg: linear-gradient(160deg, #0b1428 0%, #0e1a33 45%, #101f3d 100%);
+  --decor-corner: #1b3f8f;
+  --decor-accent: #2b5fd0;
+  --decor-gap: #0e1a33;
+
+  --bg: #0e1a33;
+  --bg-section: #101a33;
+  --bg-card: #16213e;
+  --fg: #eef2f9;
+  --fg-muted: #a2b1cc;
+  --border: #2a3859;
+  --blue-muted: #1c2c52;
+}
+
+/* Darken the map tiles; markers keep their colours. */
+[data-theme='dark'] .leaflet-tile-pane {
+  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+[data-theme='dark'] .leaflet-popup-content-wrapper,
+[data-theme='dark'] .leaflet-popup-tip,
+[data-theme='dark'] .leaflet-bar a {
+  background: #16213e;
+  color: #eef2f9;
+}
+[data-theme='dark'] .leaflet-control-attribution {
+  background: rgba(22, 33, 62, 0.85);
+  color: #a2b1cc;
+}
+[data-theme='dark'] .leaflet-control-attribution a {
+  color: #8fb3f5;
+}
+
 @layer base {
   body {
-    background: linear-gradient(160deg, #f8faff 0%, var(--bg) 45%, #e4edfb 100%) fixed;
+    background: var(--page-bg) fixed;
     color: var(--fg);
     @apply font-sans antialiased;
   }
@@ -39,6 +225,13 @@
   .font-display {
     font-weight: 700;
     letter-spacing: -0.01em;
+  }
+
+  /* Fields without their own background would otherwise get the browser's grey in dark mode. */
+  textarea,
+  select,
+  input:not([type='checkbox'], [type='radio'], [type='range'], [type='file']) {
+    background-color: rgb(var(--c-surface));
   }
 
   ::selection {

@@ -126,7 +126,7 @@ export default function Landing() {
           <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 rounded-3xl bg-navy px-8 py-10 sm:flex-row sm:items-center sm:px-12">
             <div>
               <h2 className="font-display text-3xl text-white sm:text-4xl">{t('landing.ctaTitle')}</h2>
-              <p className="mt-2 max-w-lg text-slate-300">{t('landing.ctaText')}</p>
+              <p className="mt-2 max-w-lg text-white/80">{t('landing.ctaText')}</p>
             </div>
             <Link to="/register?role=worker" className="btn btn-white btn-lg flex-none">
               {t('hero.joinAsWorker')} <ArrowRight size={18} />

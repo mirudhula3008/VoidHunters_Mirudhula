@@ -30,7 +30,9 @@
       "customer": "Customer",
       "worker": "Worker",
       "admin": "Admin"
-    }
+    },
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
   },
   "hero": {
     "eyebrow": "Hyperlocal · On-demand · Verified",

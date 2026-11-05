@@ -383,7 +383,7 @@ function SuccessScreen({ payment, booking, onDone }) {
 
 function Overlay({ children }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-navy/40 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm" role="dialog" aria-modal="true">
       <div className="flex w-full max-w-sm flex-col items-center rounded-2xl bg-white p-8 text-center shadow-lift">{children}</div>
     </div>
   );

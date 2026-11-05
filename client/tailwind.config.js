@@ -1,64 +1,40 @@
 /** @type {import('tailwindcss').Config} */
 
 // FixIT theme: deep navy on pale blue, from the team's reference design.
-// The standard blue / slate / emerald / amber scales are remapped to the theme
-// so existing utility classes pick up the palette automatically.
+// Every colour is a CSS variable set in src/index.css (:root for light, [data-theme='dark'] for dark),
+// so existing utility classes switch with the mode automatically.
+const c = (name) => `rgb(var(--c-${name}) / <alpha-value>)`;
+const scale = (name, shades) => Object.fromEntries(shades.map((shade) => [shade, c(`${name}-${shade}`)]));
+const SHADES = [50, 100, 200, 300, 400, 500, 600, 700, 800];
+
 export default {
   content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     extend: {
       colors: {
-        navy: '#0A2259',
-        // Service Blue — primary accent, links, CTAs
-        blue: {
-          50: '#EAF1FC', // --blue-muted
-          100: '#D9E6FA',
-          200: '#B9CFF3',
-          300: '#8EB0E8',
-          400: '#5A86D6', // --blue-light
-          500: '#2F62BE',
-          600: '#123F9C', // --blue
-          700: '#0E3380',
-          800: '#0B2A6B',
-          900: '#0A2259',
-        },
-        // Neutrals — section background, borders, muted and main text
-        slate: {
-          50: '#F1F5FC', // --bg-section
-          100: '#E8EEF8',
-          200: '#DCE5F3', // --border
-          300: '#C6D2E6',
-          400: '#8496B8',
-          500: '#52627F', // --fg-muted
-          600: '#445471',
-          700: '#2F4064',
-          800: '#1C2E56',
-          900: '#0A2259', // --fg / --navy
-        },
-        // Green — verified, available, success
-        emerald: {
-          50: '#E3F5EE', // --green-light
-          100: '#C9EBDD',
-          200: '#A6DDC6',
-          300: '#6FC7A2',
-          400: '#45B788',
-          500: '#2AA876', // --green
-          600: '#2AA876',
-          700: '#1F8A5F',
-          800: '#176B4A',
-        },
-        // Amber — CTA accent, stars, negotiable
-        amber: {
-          50: '#FFF6E8',
-          100: '#FFEACC', // --amber-light
-          200: '#FFDCA8',
-          300: '#FBC56A',
-          400: '#F5A623', // --amber
-          500: '#F5A623',
-          600: '#D98C0E',
-          700: '#A86A06',
-          800: '#8A5A0B',
-        },
+        navy: c('navy'),
+        blue: scale('blue', [...SHADES, 900]),
+        slate: scale('slate', [...SHADES, 900]),
+        emerald: scale('emerald', SHADES),
+        amber: scale('amber', SHADES),
+        rose: scale('rose', [50, 100, 200, 400, 500, 600, 700, 800]),
+        red: scale('red', [50, 500, 600, 700]),
+        sky: scale('sky', [50, 200, 700]),
+        orange: scale('orange', [100, 800]),
+        indigo: scale('indigo', [50, 200, 700]),
+      },
+      // Backgrounds differ from text in dark mode: bg-white is a dark surface while text-white
+      // stays white, bg-navy is a bright button while text-navy turns pale, and the darker
+      // shades must stay dark enough for white text on hover.
+      backgroundColor: {
+        white: c('surface'),
+        navy: c('navy-bg'),
+        blue: { 700: c('bg-blue-700') },
+        emerald: { 700: c('bg-emerald-700') },
+        rose: { 700: c('bg-rose-700') },
+      },
+      borderColor: {
+        white: c('surface-border'),
       },
       fontFamily: {
         // Indic fallbacks render Tamil, Hindi and Bengali text in the matching Noto Sans.

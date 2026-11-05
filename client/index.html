@@ -4,6 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0A2259" />
+    <script>
+      // Applies the saved mode before the first paint, so dark mode doesn't flash white.
+      try {
+        if (localStorage.getItem('theme') === 'dark') {
+          document.documentElement.dataset.theme = 'dark';
+          document.querySelector('meta[name="theme-color"]').content = '#0B1428';
+        }
+      } catch {}
+    </script>
     <title>FixIT · Trusted local services near you</title>
     <meta name="description" content="FixIT connects you with verified plumbers, electricians, automotive technicians, cleaners and more near you, with transparent prices, real reviews and booking in your language." />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

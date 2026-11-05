@@ -3,8 +3,10 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { LogOut, Menu, Wrench, X } from 'lucide-react';
 import Avatar from './Avatar';
 import LanguageSelector from './LanguageSelector';
+import ThemeToggle from './ThemeToggle';
 import { homePathFor, useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
+import useTheme from '../hooks/useTheme';
 
 // Links per role (labels are translation keys).
 const LINKS = {
@@ -37,6 +39,7 @@ export default function Navbar() {
   const { user, logout, rememberLanguage } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
 
@@ -68,6 +71,7 @@ export default function Navbar() {
 
         {/* Always-visible controls on small screens */}
         <div className="flex items-center gap-1 lg:hidden">
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
           <LanguageSelector onChange={rememberLanguage} />
           <button
             type="button"
@@ -90,6 +94,9 @@ export default function Navbar() {
           ))}
 
           <div className="hidden lg:ml-2 lg:block">
+            <ThemeToggle theme={theme} onToggle={toggleTheme} />
+          </div>
+          <div className="hidden lg:block">
             <LanguageSelector onChange={rememberLanguage} />
           </div>
 
