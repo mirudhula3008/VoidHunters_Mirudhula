@@ -229,7 +229,9 @@
     "loadError": "এই কর্মীর তথ্য লোড করা গেল না।",
     "goBack": "← ফিরে যান",
     "completedJobs": "সম্পন্ন কাজ",
-    "memberSince": "সদস্য হয়েছেন"
+    "memberSince": "সদস্য হয়েছেন",
+    "fixitChoice": "FixIT চয়েস",
+    "choiceWhy": "{{reviews}}টি রিভিউ থেকে {{rating}}★, {{years}} বছরের অভিজ্ঞতা ও {{skills}}টি দক্ষতার জন্য প্রস্তাবিত"
   },
   "discovery": {
     "dashboardTitle": "আপনার কী কাজে সাহায্য দরকার?",
@@ -445,7 +447,8 @@
     "nearest": "কাছের আগে",
     "topRated": "সেরা রেটিং",
     "priceLow": "দাম: কম থেকে বেশি",
-    "priceHigh": "দাম: বেশি থেকে কম"
+    "priceHigh": "দাম: বেশি থেকে কম",
+    "recommended": "প্রস্তাবিত"
   },
   "review": {
     "title": "রিভিউ লিখুন",

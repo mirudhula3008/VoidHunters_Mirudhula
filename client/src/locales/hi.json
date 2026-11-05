@@ -229,7 +229,9 @@
     "loadError": "इस कामगार की जानकारी लोड नहीं हो सकी।",
     "goBack": "← वापस जाएं",
     "completedJobs": "पूरे किए गए काम",
-    "memberSince": "सदस्य बने"
+    "memberSince": "सदस्य बने",
+    "fixitChoice": "FixIT चॉइस",
+    "choiceWhy": "{{reviews}} समीक्षाओं से {{rating}}★, {{years}} साल के अनुभव और {{skills}} कौशल के लिए अनुशंसित"
   },
   "discovery": {
     "dashboardTitle": "आपको किस काम में मदद चाहिए?",
@@ -445,7 +447,8 @@
     "nearest": "सबसे नज़दीक पहले",
     "topRated": "सबसे ज़्यादा रेटिंग",
     "priceLow": "कीमत: कम से ज़्यादा",
-    "priceHigh": "कीमत: ज़्यादा से कम"
+    "priceHigh": "कीमत: ज़्यादा से कम",
+    "recommended": "अनुशंसित"
   },
   "review": {
     "title": "समीक्षा लिखें",

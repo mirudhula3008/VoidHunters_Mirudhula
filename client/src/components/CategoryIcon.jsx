@@ -1,27 +1,27 @@
 import { Cctv, Cog, Hammer, HardHat, Paintbrush, Refrigerator, Sparkles, Truck, Wrench, Zap } from 'lucide-react';
 
-// Line icon + tile tint per service category (theme guide §5–6). Names and blurbs live in the locale files.
+// Navy icon in a pale circle per service category. Names and blurbs live in the locale files.
 export const CATEGORY_META = {
-  plumbing: { Icon: Wrench, tile: 'bg-blue-50 text-blue-600' },
-  electrical: { Icon: Zap, tile: 'bg-amber-100 text-amber-700' },
-  carpentry: { Icon: Hammer, tile: 'bg-slate-100 text-slate-700' },
-  painting: { Icon: Paintbrush, tile: 'bg-blue-50 text-blue-600' },
-  cleaning: { Icon: Sparkles, tile: 'bg-emerald-50 text-emerald-700' },
-  appliance_repair: { Icon: Refrigerator, tile: 'bg-slate-100 text-slate-700' },
-  construction: { Icon: HardHat, tile: 'bg-amber-100 text-amber-700' },
-  packers_movers: { Icon: Truck, tile: 'bg-blue-50 text-blue-600' },
-  cctv_security: { Icon: Cctv, tile: 'bg-emerald-50 text-emerald-700' },
-  mechanic: { Icon: Cog, tile: 'bg-slate-100 text-slate-700' },
+  plumbing: { Icon: Wrench },
+  electrical: { Icon: Zap },
+  carpentry: { Icon: Hammer },
+  painting: { Icon: Paintbrush },
+  cleaning: { Icon: Sparkles },
+  appliance_repair: { Icon: Refrigerator },
+  construction: { Icon: HardHat },
+  packers_movers: { Icon: Truck },
+  cctv_security: { Icon: Cctv },
+  mechanic: { Icon: Cog },
 };
 
-export default function CategoryIcon({ id, size = 'md', tinted = true }) {
+export default function CategoryIcon({ id, size = 'md' }) {
   const meta = CATEGORY_META[id] || CATEGORY_META.plumbing;
   const { Icon } = meta;
-  const box = size === 'lg' ? 'h-14 w-14 rounded-2xl' : size === 'sm' ? 'h-9 w-9 rounded-lg' : 'h-12 w-12 rounded-xl';
-  const icon = size === 'lg' ? 28 : size === 'sm' ? 18 : 24;
+  const box = size === 'lg' ? 'h-16 w-16' : size === 'sm' ? 'h-9 w-9' : 'h-12 w-12';
+  const icon = size === 'lg' ? 30 : size === 'sm' ? 18 : 24;
   return (
-    <span className={`inline-flex flex-none items-center justify-center ${box} ${tinted ? meta.tile : 'text-blue-600'}`} aria-hidden="true">
-      <Icon size={icon} strokeWidth={1.75} />
+    <span className={`inline-flex flex-none items-center justify-center rounded-full bg-blue-50 text-navy ${box}`} aria-hidden="true">
+      <Icon size={icon} strokeWidth={2} fill="currentColor" fillOpacity={0.18} />
     </span>
   );
 }

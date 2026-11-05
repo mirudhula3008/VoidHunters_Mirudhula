@@ -229,7 +229,9 @@
     "loadError": "Could not load this worker.",
     "goBack": "← Go back",
     "completedJobs": "Jobs Completed",
-    "memberSince": "Member Since"
+    "memberSince": "Member Since",
+    "fixitChoice": "FixIT Choice",
+    "choiceWhy": "Recommended for {{rating}}★ from {{reviews}} reviews, {{years}} yrs experience and {{skills}} skills"
   },
   "discovery": {
     "dashboardTitle": "What do you need help with?",
@@ -445,7 +447,8 @@
     "nearest": "Nearest First",
     "topRated": "Top Rated",
     "priceLow": "Price: Low to High",
-    "priceHigh": "Price: High to Low"
+    "priceHigh": "Price: High to Low",
+    "recommended": "Recommended"
   },
   "review": {
     "title": "Write a Review",

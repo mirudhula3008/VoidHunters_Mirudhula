@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-// Blue-Collar Services theme (see BlueCollar-Services-Theme-Guide.pdf).
+// FixIT theme: deep navy on pale blue, from the team's reference design.
 // The standard blue / slate / emerald / amber scales are remapped to the theme
 // so existing utility classes pick up the palette automatically.
 export default {
@@ -8,32 +8,32 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: '#1B2A4A',
+        navy: '#0A2259',
         // Service Blue — primary accent, links, CTAs
         blue: {
-          50: '#E8EEFF', // --blue-muted
-          100: '#D6E0FF',
-          200: '#B8C9FF',
-          300: '#8FAAFF',
-          400: '#5B8AFF', // --blue-light
-          500: '#4775FF',
-          600: '#3366FF', // --blue
-          700: '#2952D9',
-          800: '#2142AD',
-          900: '#1B2A4A',
+          50: '#EAF1FC', // --blue-muted
+          100: '#D9E6FA',
+          200: '#B9CFF3',
+          300: '#8EB0E8',
+          400: '#5A86D6', // --blue-light
+          500: '#2F62BE',
+          600: '#123F9C', // --blue
+          700: '#0E3380',
+          800: '#0B2A6B',
+          900: '#0A2259',
         },
         // Neutrals — section background, borders, muted and main text
         slate: {
-          50: '#F1F4F9', // --bg-section
-          100: '#E9EDF4',
-          200: '#DFE4ED', // --border
-          300: '#C9D1DF',
-          400: '#8A9ABD',
-          500: '#5A6A85', // --fg-muted
-          600: '#4D5C76',
-          700: '#364563',
-          800: '#253456',
-          900: '#1B2A4A', // --fg / --navy
+          50: '#F1F5FC', // --bg-section
+          100: '#E8EEF8',
+          200: '#DCE5F3', // --border
+          300: '#C6D2E6',
+          400: '#8496B8',
+          500: '#52627F', // --fg-muted
+          600: '#445471',
+          700: '#2F4064',
+          800: '#1C2E56',
+          900: '#0A2259', // --fg / --navy
         },
         // Green — verified, available, success
         emerald: {
@@ -62,13 +62,13 @@ export default {
       },
       fontFamily: {
         // Indic fallbacks render Tamil, Hindi and Bengali text in the matching Noto Sans.
-        sans: ['"DM Sans"', '"Noto Sans Tamil"', '"Noto Sans Devanagari"', '"Noto Sans Bengali"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        display: ['"Instrument Serif"', '"Noto Sans Tamil"', '"Noto Sans Devanagari"', '"Noto Sans Bengali"', 'ui-serif', 'Georgia', 'serif'],
+        sans: ['Montserrat', '"Noto Sans Tamil"', '"Noto Sans Devanagari"', '"Noto Sans Bengali"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['"Playfair Display"', '"Noto Sans Tamil"', '"Noto Sans Devanagari"', '"Noto Sans Bengali"', 'ui-serif', 'Georgia', 'serif'],
       },
       boxShadow: {
-        card: '0 1px 2px rgba(27, 42, 74, 0.04), 0 2px 8px rgba(27, 42, 74, 0.05)',
-        lift: '0 4px 16px rgba(27, 42, 74, 0.08)',
-        glow: '0 0 0 4px rgba(51, 102, 255, 0.15)',
+        card: '0 2px 4px rgba(10, 34, 89, 0.04), 0 8px 24px rgba(10, 34, 89, 0.07)',
+        lift: '0 10px 30px rgba(10, 34, 89, 0.14)',
+        glow: '0 0 0 4px rgba(18, 63, 156, 0.15)',
       },
     },
   },

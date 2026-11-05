@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { Check, MapPin } from 'lucide-react';
 import Avatar from '../components/Avatar';
+import { FixitChoiceBadge, FixitChoiceReason } from '../components/FixitChoice';
 import StarDisplay from '../components/StarDisplay';
 import WorkerMap from '../components/WorkerMap';
 import ReviewList from '../components/ReviewList';
@@ -17,6 +18,9 @@ export default function WorkerDetail() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const job = searchParams.get('job');
+  // Set by the search results, because FixIT Choice depends on who else matched that search.
+  const { state } = useLocation();
+  const isChoice = Boolean(state?.fixitChoice);
   const navigate = useNavigate();
   const { user } = useAuth();
   const { t } = useLanguage();
@@ -64,6 +68,7 @@ export default function WorkerDetail() {
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
                 <h1 className="font-display text-3xl text-navy sm:text-4xl">{worker.name}</h1>
+                {isChoice && <FixitChoiceBadge />}
                 {worker.isVerified && (
                   <span className="badge badge-verified">
                     <Check size={12} strokeWidth={3} /> {t('worker.verified')}
@@ -83,6 +88,7 @@ export default function WorkerDetail() {
                   <MapPin size={14} className="text-rose-500" /> {worker.address}
                 </p>
               )}
+              {isChoice && <FixitChoiceReason worker={worker} className="mt-2" />}
               {worker.bio && <p className="mt-3 leading-relaxed text-slate-600">{worker.bio}</p>}
             </div>
           </section>

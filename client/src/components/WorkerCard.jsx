@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Check, MapPin } from 'lucide-react';
 import Avatar from './Avatar';
+import { FixitChoiceBadge, FixitChoiceReason } from './FixitChoice';
 import StarDisplay from './StarDisplay';
 import { unitLabel } from './ServicesEditor';
 import { useLanguage } from '../context/LanguageContext';
@@ -15,8 +16,9 @@ export default function WorkerCard({ worker, job, highlighted, onHover }) {
       to={job ? `/workers/${worker._id}?job=${job}` : `/workers/${worker._id}`}
       onMouseEnter={() => onHover?.(worker._id)}
       onMouseLeave={() => onHover?.(null)}
+      state={{ fixitChoice: Boolean(worker.fixitChoice) }}
       className={`flex gap-4 rounded-2xl border bg-white p-4 shadow-card transition hover:shadow-lift ${
-        highlighted ? 'border-blue-600 shadow-glow' : 'border-slate-200'
+        highlighted || worker.fixitChoice ? 'border-blue-600 shadow-glow' : 'border-slate-200'
       }`}
     >
       <Avatar person={worker} className="h-14 w-14" textClass="text-xl" />
@@ -24,6 +26,7 @@ export default function WorkerCard({ worker, job, highlighted, onHover }) {
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           <h3 className="truncate font-semibold text-navy">{worker.name}</h3>
+          {worker.fixitChoice && <FixitChoiceBadge />}
           {worker.isVerified && (
             <span className="badge badge-verified">
               <Check size={12} strokeWidth={3} /> {t('worker.verified')}
@@ -49,6 +52,7 @@ export default function WorkerCard({ worker, job, highlighted, onHover }) {
           {jobUnit && <span className="text-xs text-slate-400">{unitLabel(jobUnit, t)}</span>}
           {worker.isNegotiable && <span className="badge badge-negotiable">{t('worker.negotiable')}</span>}
         </div>
+        {worker.fixitChoice && <FixitChoiceReason worker={worker} className="mt-2" />}
       </div>
     </Link>
   );

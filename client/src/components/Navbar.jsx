@@ -30,7 +30,7 @@ const GUEST_LINKS = [{ to: '/dashboard', label: 'nav.findWorkers' }];
 
 const linkClass = ({ isActive }) =>
   `block whitespace-nowrap rounded-lg px-3 py-2 text-sm font-medium transition ${
-    isActive ? 'bg-blue-50 text-blue-700' : 'text-slate-500 hover:text-navy'
+    isActive ? 'bg-blue-50 text-navy' : 'text-navy hover:text-blue-500'
   }`;
 
 export default function Navbar() {
@@ -57,12 +57,12 @@ export default function Navbar() {
           onClick={close}
           aria-label={t('app.name')}
         >
-          <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-blue-600 text-white shadow-sm transition group-hover:-rotate-12">
+          <span className="flex h-10 w-10 flex-none items-center justify-center rounded-full bg-navy text-white shadow-sm transition group-hover:-rotate-12">
             <Wrench size={20} strokeWidth={2.5} aria-hidden="true" />
           </span>
           <span>
             <span className="text-navy">{t('app.nameFirst')}</span>
-            <span className="text-blue-600">{t('app.nameSecond')}</span>
+            <span className="text-navy">{t('app.nameSecond')}</span>
           </span>
         </Link>
 

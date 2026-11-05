@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ThemeBackdrop } from './components/ThemeDecor';
 import { AuthProvider } from './context/AuthContext';
 import { useLanguage } from './context/LanguageContext';
 import Landing from './pages/Landing';
@@ -32,6 +33,7 @@ export default function App() {
   return (
     <AuthProvider>
       <div className="flex min-h-screen flex-col">
+        <ThemeBackdrop />
         <Navbar />
         <main className="flex-1">
           <Routes>

@@ -2,22 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Blue-Collar Services design tokens (theme guide §10) */
+/* FixIT design tokens */
 :root {
-  --navy: #1b2a4a;
-  --blue: #3366ff;
-  --blue-light: #5b8aff;
-  --blue-muted: #e8eeff;
+  --navy: #0a2259;
+  --blue: #123f9c;
+  --blue-light: #5a86d6;
+  --blue-muted: #eaf1fc;
   --amber: #f5a623;
   --amber-light: #ffeacc;
   --green: #2aa876;
   --green-light: #e3f5ee;
-  --bg: #fafbfd;
-  --bg-section: #f1f4f9;
+  --bg: #f5f8fe;
+  --bg-section: #f1f5fc;
   --bg-card: #ffffff;
-  --fg: #1b2a4a;
-  --fg-muted: #5a6a85;
-  --border: #dfe4ed;
+  --fg: #0a2259;
+  --fg-muted: #52627f;
+  --border: #dce5f3;
 
   --sp-1: 4px;
   --sp-2: 8px;
@@ -31,9 +31,14 @@
 
 @layer base {
   body {
-    background: var(--bg);
+    background: linear-gradient(160deg, #f8faff 0%, var(--bg) 45%, #e4edfb 100%) fixed;
     color: var(--fg);
     @apply font-sans antialiased;
+  }
+
+  .font-display {
+    font-weight: 700;
+    letter-spacing: -0.01em;
   }
 
   ::selection {
@@ -44,23 +49,26 @@
 @layer components {
   /* Buttons (theme guide §3): primary, secondary, amber (booking), ghost */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-sm font-semibold transition
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold transition
       focus:outline-none disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-sm {
-    @apply rounded-lg px-3.5 py-1.5 text-sm;
+    @apply rounded-full px-4 py-1.5 text-sm;
   }
   .btn-lg {
-    @apply px-6 py-3 text-base;
+    @apply px-8 py-3.5 text-base;
   }
   .btn-primary {
-    @apply bg-blue-600 text-white shadow-sm hover:bg-blue-700;
+    @apply bg-navy text-white shadow-lift hover:bg-blue-700;
   }
   .btn-secondary {
-    @apply border border-slate-200 bg-white text-slate-900 hover:border-blue-400 hover:text-blue-700;
+    @apply border border-navy bg-white text-navy hover:bg-blue-50;
   }
   .btn-amber {
-    @apply bg-amber-500 text-navy shadow-sm hover:bg-amber-600;
+    @apply bg-navy text-white shadow-lift hover:bg-blue-700;
+  }
+  .btn-white {
+    @apply bg-white text-navy hover:bg-blue-50;
   }
   .btn-ghost {
     @apply text-slate-500 hover:bg-slate-50 hover:text-slate-900;
@@ -94,16 +102,19 @@
   .badge-rating {
     @apply bg-blue-50 text-blue-700;
   }
+  .badge-choice {
+    @apply bg-navy text-white;
+  }
   .badge-new {
     @apply bg-amber-100 text-amber-700;
   }
 
   /* Cards & surfaces (theme guide §6) */
   .card {
-    @apply rounded-2xl border border-slate-200 bg-white shadow-card;
+    @apply rounded-2xl border border-white bg-white/95 shadow-card;
   }
   .card-hover {
-    @apply transition hover:-translate-y-0.5 hover:border-blue-300 hover:shadow-lift;
+    @apply transition hover:-translate-y-1 hover:border-blue-300 hover:shadow-lift;
   }
 
   /* Form controls (theme guide §8): blue focus glow ring */
@@ -121,6 +132,13 @@
   }
 }
 
+/* Small dot pattern used behind pages */
+.dot-grid {
+  background-image: radial-gradient(#5a86d6 1.5px, transparent 1.5px);
+  background-size: 14px 14px;
+  opacity: 0.45;
+}
+
 /* Keep Leaflet panes below sticky headers and dropdowns */
 .leaflet-container {
   z-index: 0;
@@ -130,14 +148,14 @@
 /* Blue focus glow ring (theme guide §8). Plain CSS so it doesn't depend on the Tailwind config. */
 .btn:focus-visible,
 .input:focus {
-  box-shadow: 0 0 0 4px rgba(51, 102, 255, 0.15);
+  box-shadow: 0 0 0 4px rgba(18, 63, 156, 0.2);
 }
 
-/* Indic languages: Instrument Serif has no Tamil/Devanagari/Bengali glyphs, so
+/* Indic languages: Playfair Display has no Tamil/Devanagari/Bengali glyphs, so
    display headings switch to the matching Noto Sans at a heavier weight, and
    synthetic italics (which look broken in these scripts) are turned off. */
 html:not([lang='en']) .font-display {
-  font-family: 'DM Sans', 'Noto Sans Tamil', 'Noto Sans Devanagari', 'Noto Sans Bengali', sans-serif;
+  font-family: 'Montserrat', 'Noto Sans Tamil', 'Noto Sans Devanagari', 'Noto Sans Bengali', sans-serif;
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.25;

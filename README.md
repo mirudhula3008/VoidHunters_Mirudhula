@@ -44,6 +44,8 @@ The whole app works in **English, Tamil (தமிழ்), Hindi (हिन्�
   construction, packers & movers, CCTV & security and automotive service technician.
 - **Choose a job first:** every category opens a list of jobs (for example *Mason / Bricklaying*). Only
   workers who do that job are shown, with that job's price, and the booking page shows that job alone.
+- **FixIT Choice recommendations:** each search scores workers on ratings, review count, skills listed
+  and experience. The best available worker gets a *FixIT Choice* badge with the reason, and is listed first.
 - **Profile pictures:** each sample worker has their own photo matching their gender (placeholder
   portraits from randomuser.me, stored in `client/public/avatars`; not real workers). A new worker with
   no uploaded photo gets a drawn picture matching their gender. An uploaded photo always takes priority.

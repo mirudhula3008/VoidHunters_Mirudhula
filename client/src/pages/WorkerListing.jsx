@@ -79,7 +79,7 @@ function WorkerResults({ category, job }) {
       </Link>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-2">
         <div>
-          <h1 className="font-display text-3xl text-navy sm:text-4xl">{title}</h1>
+          <h1 className="mb-2 font-display text-3xl text-navy sm:text-4xl">{title}</h1>
           <LocationBanner {...location} />
         </div>
         <p className="text-sm text-slate-500">

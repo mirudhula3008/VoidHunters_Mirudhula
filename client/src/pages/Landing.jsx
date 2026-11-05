@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
-import { ArrowRight, BadgeCheck, IndianRupee, MapPin, Star } from 'lucide-react';
+import { ArrowRight, ChevronDown, IndianRupee, MapPin, ShieldCheck, Star } from 'lucide-react';
 import CategoryIcon from '../components/CategoryIcon';
+import { NavyCorners } from '../components/ThemeDecor';
 import { homePathFor, useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { CATEGORIES, categoryPath } from '../data/categories';
@@ -12,7 +13,7 @@ const STEPS = [
 ];
 
 const TRUST = [
-  { Icon: BadgeCheck, label: 'hero.trustVerified' },
+  { Icon: ShieldCheck, label: 'hero.trustVerified' },
   { Icon: IndianRupee, label: 'hero.trustPricing' },
   { Icon: Star, label: 'hero.trustReviews' },
 ];
@@ -24,13 +25,16 @@ export default function Landing() {
   return (
     <div>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-slate-200 bg-white">
-        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-50 blur-3xl" aria-hidden="true" />
-        <div className="pointer-events-none absolute -bottom-40 -left-24 h-80 w-80 rounded-full bg-amber-100/60 blur-3xl" aria-hidden="true" />
+      <section className="relative overflow-hidden">
+        <NavyCorners />
 
-        <div className="relative mx-auto max-w-4xl px-4 py-16 text-center sm:py-24">
-          <p className="eyebrow">{t('hero.eyebrow')}</p>
-          <h1 className="mt-4 font-display text-5xl leading-[1.05] text-navy sm:text-7xl">
+        <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-16 text-center sm:pt-24">
+          <div className="flex items-center justify-center gap-4">
+            <span className="hidden h-px w-20 bg-blue-600 sm:block" aria-hidden="true" />
+            <p className="eyebrow">{t('hero.eyebrow')}</p>
+            <span className="hidden h-px w-20 bg-blue-600 sm:block" aria-hidden="true" />
+          </div>
+          <h1 className="mt-5 font-display text-5xl leading-[1.08] text-navy sm:text-7xl">
             {t('hero.titleStart')} <em className="text-blue-600">{t('hero.titleEm')}</em> {t('hero.titleEnd')}
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-500">{t('hero.subtitle')}</p>
@@ -61,21 +65,25 @@ export default function Landing() {
             </p>
           )}
 
-          <ul className="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3">
+          <ul className="mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-0 sm:divide-x sm:divide-slate-300">
             {TRUST.map(({ Icon, label }) => (
-              <li key={label} className="caption flex items-center gap-2">
-                <Icon size={16} className="text-blue-600" /> {t(label)}
+              <li key={label} className="flex items-center gap-2 px-6 text-xs font-semibold uppercase tracking-[0.06em] text-navy">
+                <Icon size={18} className="text-navy" fill="currentColor" fillOpacity={0.2} /> {t(label)}
               </li>
             ))}
           </ul>
+
+          <a href="#services" className="mt-12 inline-flex flex-col items-center gap-1 text-blue-600">
+            <span className="eyebrow">{t('landing.servicesEyebrow')}</span>
+            <ChevronDown size={22} aria-hidden="true" />
+          </a>
         </div>
       </section>
 
       {/* Services */}
-      <section className="bg-slate-50">
+      <section id="services" className="scroll-mt-16">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:py-20">
-          <p className="eyebrow text-center">{t('landing.servicesEyebrow')}</p>
-          <h2 className="mt-3 text-center font-display text-4xl text-navy sm:text-5xl">{t('landing.servicesTitle')}</h2>
+          <h2 className="text-center font-display text-4xl text-navy sm:text-5xl">{t('landing.servicesTitle')}</h2>
 
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CATEGORIES.map((c) => (
@@ -120,7 +128,7 @@ export default function Landing() {
               <h2 className="font-display text-3xl text-white sm:text-4xl">{t('landing.ctaTitle')}</h2>
               <p className="mt-2 max-w-lg text-slate-300">{t('landing.ctaText')}</p>
             </div>
-            <Link to="/register?role=worker" className="btn btn-amber btn-lg flex-none">
+            <Link to="/register?role=worker" className="btn btn-white btn-lg flex-none">
               {t('hero.joinAsWorker')} <ArrowRight size={18} />
             </Link>
           </div>

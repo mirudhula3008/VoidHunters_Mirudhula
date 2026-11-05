@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const User = require('../models/User');
 const Review = require('../models/Review');
 const { categoryIds, jobsFor } = require('../data/categories');
+const { rankWorkers } = require('../utils/recommendation');
 
 const PUBLIC_WORKER_FIELDS = {
   password: 0,
@@ -20,7 +21,8 @@ function toNumber(value) {
 }
 
 // GET /api/workers?lat=&lng=&category=&job=&radius=&minPrice=&maxPrice=&minRating=&available=
-// Returns verified workers near the point, nearest first, with `distance` in metres.
+// Returns verified workers near the point, nearest first, with `distance` in metres,
+// a recommendationScore, and fixitChoice on the single best match.
 async function searchWorkers(req, res, next) {
   try {
     const lat = toNumber(req.query.lat);
@@ -96,7 +98,7 @@ async function searchWorkers(req, res, next) {
       { $limit: 50 },
     ]);
 
-    res.json({ count: workers.length, radiusKm, workers });
+    res.json({ count: workers.length, radiusKm, workers: rankWorkers(workers) });
   } catch (err) {
     next(err);
   }

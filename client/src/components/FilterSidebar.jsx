@@ -5,10 +5,15 @@ export const DEFAULT_FILTERS = {
   maxPrice: 5000,
   minRating: 0,
   available: false,
-  sort: 'nearest',
+  sort: 'recommended',
 };
 
 export const SORTS = {
+  // FixIT Choice first, then the highest recommendation score, then the nearest.
+  recommended: (a, b) =>
+    Number(Boolean(b.fixitChoice)) - Number(Boolean(a.fixitChoice)) ||
+    (b.recommendationScore || 0) - (a.recommendationScore || 0) ||
+    a.distance - b.distance,
   nearest: (a, b) => a.distance - b.distance,
   topRated: (a, b) => (b.averageRating || 0) - (a.averageRating || 0) || a.distance - b.distance,
   priceLow: (a, b) => (a.minPrice ?? Infinity) - (b.minPrice ?? Infinity),
