@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import { ThemeBackdrop } from './components/ThemeDecor';
+import { PageCorners, ThemeBackdrop } from './components/ThemeDecor';
 import { AuthProvider } from './context/AuthContext';
 import { useLanguage } from './context/LanguageContext';
 import Landing from './pages/Landing';
@@ -35,7 +35,9 @@ export default function App() {
       <div className="flex min-h-screen flex-col">
         <ThemeBackdrop />
         <Navbar />
-        <main className="flex-1">
+        <main className="relative flex-1 md:pb-28">
+          <PageCorners />
+          <div className="relative">
           <Routes>
             {/* Module 1 — Authentication and User Management */}
             <Route path="/" element={<Landing />} />
@@ -71,6 +73,7 @@ export default function App() {
 
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </div>
         </main>
       </div>
     </AuthProvider>

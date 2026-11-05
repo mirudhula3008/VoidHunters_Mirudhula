@@ -79,8 +79,6 @@
 
   --page-bg: linear-gradient(160deg, #f8faff 0%, #f5f8fe 45%, #e4edfb 100%);
   --decor-corner: #0a2259;
-  --decor-accent: #123f9c;
-  --decor-gap: #ffffff;
 
   --navy: #0a2259;
   --blue: #123f9c;
@@ -185,8 +183,6 @@
 
   --page-bg: linear-gradient(160deg, #0b1428 0%, #0e1a33 45%, #101f3d 100%);
   --decor-corner: #1b3f8f;
-  --decor-accent: #2b5fd0;
-  --decor-gap: #0e1a33;
 
   --bg: #0e1a33;
   --bg-section: #101a33;
@@ -323,13 +319,6 @@
   .caption {
     @apply text-xs font-semibold uppercase tracking-[0.08em] text-slate-500;
   }
-}
-
-/* Small dot pattern used behind pages */
-.dot-grid {
-  background-image: radial-gradient(#5a86d6 1.5px, transparent 1.5px);
-  background-size: 14px 14px;
-  opacity: 0.45;
 }
 
 /* Keep Leaflet panes below sticky headers and dropdowns */

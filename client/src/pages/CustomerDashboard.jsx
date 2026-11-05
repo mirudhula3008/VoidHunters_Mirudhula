@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import CategoryCard from '../components/CategoryCard';
 import LocationBanner from '../components/LocationBanner';
-import { NavyCorners } from '../components/ThemeDecor';
 import useGeolocation from '../hooks/useGeolocation';
 import { getCategories } from '../api/discovery';
 import { useLanguage } from '../context/LanguageContext';
@@ -21,9 +20,8 @@ export default function CustomerDashboard() {
   }, []);
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden">
-      <NavyCorners />
-      <div className="relative mx-auto max-w-7xl px-4 py-10 pb-24">
+    <div>
+      <div className="mx-auto max-w-7xl px-4 py-10">
       <h1 className="font-display text-4xl text-navy sm:text-5xl">{t('discovery.dashboardTitle')}</h1>
       <p className="mt-2 text-slate-600">{t('discovery.dashboardSubtitle')}</p>
       <div className="mt-3">

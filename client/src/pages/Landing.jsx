@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronDown, IndianRupee, MapPin, ShieldCheck, Star } from 'lucide-react';
 import CategoryIcon from '../components/CategoryIcon';
-import { NavyCorners } from '../components/ThemeDecor';
+import { BottomCorner } from '../components/ThemeDecor';
 import { homePathFor, useAuth } from '../context/AuthContext';
 import { useLanguage } from '../context/LanguageContext';
 import { CATEGORIES, categoryPath } from '../data/categories';
@@ -26,7 +26,7 @@ export default function Landing() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <NavyCorners />
+        <BottomCorner />
 
         <div className="relative mx-auto max-w-5xl px-4 pb-10 pt-16 text-center sm:pt-24">
           <div className="flex items-center justify-center gap-4">

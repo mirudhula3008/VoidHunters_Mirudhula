@@ -1,7 +1,6 @@
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import CategoryIcon from '../components/CategoryIcon';
-import { NavyCorners } from '../components/ThemeDecor';
 import { useLanguage } from '../context/LanguageContext';
 import { jobsFor } from '../data/categories';
 
@@ -14,9 +13,8 @@ export default function JobPicker() {
   if (!jobs.length) return <Navigate to="/dashboard" replace />;
 
   return (
-    <div className="relative overflow-hidden">
-      <NavyCorners bottom={false} />
-      <div className="relative mx-auto max-w-5xl px-4 py-8 pb-16">
+    <div>
+      <div className="mx-auto max-w-5xl px-4 py-8">
       <Link to="/dashboard" className="text-sm text-blue-600 hover:underline">
         {t('discovery.allServices')}
       </Link>
