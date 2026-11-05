@@ -19,11 +19,17 @@ const startOfToday = () => {
   return d;
 };
 
-const nextBooking = (partyField, userId) =>
-  Booking.findOne({ [partyField]: userId, status: { $in: ACTIVE }, scheduledDate: { $gte: startOfToday() } })
+// The soonest upcoming active booking, or else the latest overdue one, so an active booking is always mentioned.
+async function nextBooking(partyField, userId) {
+  const otherParty = partyField === 'customerId' ? 'workerId' : 'customerId';
+  const active = { [partyField]: userId, status: { $in: ACTIVE } };
+  const upcoming = await Booking.findOne({ ...active, scheduledDate: { $gte: startOfToday() } })
     .sort({ scheduledDate: 1, scheduledTime: 1 })
-    .populate(partyField === 'customerId' ? 'workerId' : 'customerId', 'name')
+    .populate(otherParty, 'name')
     .lean();
+  if (upcoming) return upcoming;
+  return Booking.findOne(active).sort({ scheduledDate: -1, scheduledTime: -1 }).populate(otherParty, 'name').lean();
+}
 
 const bookingVars = (booking, other) => ({
   service: booking.serviceName,
