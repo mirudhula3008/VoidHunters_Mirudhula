@@ -46,6 +46,9 @@ The whole app works in **English, Tamil (தமிழ்), Hindi (हिन्�
   workers who do that job are shown, with that job's price, and the booking page shows that job alone.
 - **Reviews with a photo:** after a completed job, customers can rate the worker, write a review and attach
   one photo of the work (JPG, PNG or WEBP, up to 5 MB). It shows on the worker's profile.
+- **Customer support tickets:** a chat button lets customers and workers raise a ticket with a severity.
+  They track it under *Tickets*, with the date and time raised. Admins see all tickets under *Admin → Tickets*,
+  filter by severity, status or who raised it, and update the status.
 - **Light and dark mode:** a sun/moon button in the navbar switches the whole site and remembers the choice.
 - **FixIT Choice recommendations:** each search scores workers on ratings, review count, skills listed
   and experience. The best available worker gets a *FixIT Choice* badge with the reason, and is listed first.

@@ -2,6 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import { PageCorners, ThemeBackdrop } from './components/ThemeDecor';
+import SupportChat from './components/SupportChat';
 import { AuthProvider } from './context/AuthContext';
 import { useLanguage } from './context/LanguageContext';
 import Landing from './pages/Landing';
@@ -24,6 +25,8 @@ import AdminWorkers from './pages/AdminWorkers';
 import AdminWorkerDetail from './pages/AdminWorkerDetail';
 import AdminCustomers from './pages/AdminCustomers';
 import AdminBookings from './pages/AdminBookings';
+import AdminTickets from './pages/AdminTickets';
+import MyTickets from './pages/MyTickets';
 import PaymentPage from './pages/PaymentPage';
 import EarningsDashboard from './pages/EarningsDashboard';
 
@@ -71,10 +74,15 @@ export default function App() {
             <Route path="/payment/:bookingId" element={guard(['customer'], <PaymentPage />)} />
             <Route path="/worker/earnings" element={guard(['worker'], <EarningsDashboard />)} />
 
+            {/* Customer support */}
+            <Route path="/support/tickets" element={guard(['customer', 'worker'], <MyTickets />)} />
+            <Route path="/admin/tickets" element={guard(['admin'], <AdminTickets />)} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
           </div>
         </main>
+        <SupportChat />
       </div>
     </AuthProvider>
   );

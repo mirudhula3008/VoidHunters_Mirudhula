@@ -32,7 +32,8 @@
       "admin": "Admin"
     },
     "switchToDark": "Switch to dark mode",
-    "switchToLight": "Switch to light mode"
+    "switchToLight": "Switch to light mode",
+    "tickets": "Tickets"
   },
   "hero": {
     "eyebrow": "Hyperlocal · On-demand · Verified",
@@ -614,7 +615,8 @@
       "user": "users",
       "worker": "workers",
       "customer": "customers",
-      "booking": "bookings"
+      "booking": "bookings",
+      "ticket": "tickets"
     },
     "overviewTitle": "Platform overview",
     "paymentsRefunded": "{{count}} payment(s) refunded.",
@@ -809,5 +811,52 @@
     "tyre": "Tyre Puncture & Replacement",
     "vehicle_ac": "AC Gas Refill (Vehicle)",
     "breakdown": "Doorstep Breakdown Assistance"
+  },
+  "support": {
+    "title": "Customer Support",
+    "subtitle": "Raise a ticket and our team will look into it",
+    "close": "Close",
+    "greeting": "Hi {{name}}! What problem can we help you with?",
+    "subject": "Subject",
+    "subjectPlaceholder": "e.g. Payment not updated",
+    "message": "Describe the problem",
+    "messagePlaceholder": "What happened, and which booking is it about?",
+    "severityLabel": "Severity",
+    "severity": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "critical": "Critical"
+    },
+    "severityHelp": {
+      "low": "A question or small issue",
+      "medium": "Something isn't working",
+      "high": "A job or payment is affected",
+      "critical": "Safety issue or money lost"
+    },
+    "statusLabel": "Status",
+    "status": {
+      "open": "Open",
+      "in_progress": "In progress",
+      "resolved": "Resolved"
+    },
+    "total": "Total",
+    "raiseTicket": "Raise ticket",
+    "sending": "Sending…",
+    "raised": "Ticket {{ref}} raised",
+    "viewTickets": "View my tickets",
+    "raiseAnother": "Raise another",
+    "ticketsRaised": "Tickets raised",
+    "ticketsSubtitle": "Every ticket you've raised, newest first. Use the chat button to raise a new one.",
+    "raisedOn": "Raised on",
+    "raisedBy": "Raised by",
+    "noTickets": "You haven't raised any tickets yet.",
+    "noMatchingTickets": "No tickets match these filters.",
+    "errors": {
+      "subject": "Please enter a subject",
+      "message": "Please describe the problem in at least 10 characters",
+      "severity": "Please choose a severity",
+      "failed": "Could not raise your ticket. Please try again."
+    }
   }
 }

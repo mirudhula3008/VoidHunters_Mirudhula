@@ -41,6 +41,9 @@ app.use('/api/earnings', require('./routes/earnings'));
 app.use('/api/reviews', require('./routes/reviews'));
 app.use('/api/admin', require('./routes/admin'));
 
+// Customer support tickets
+app.use('/api/tickets', require('./routes/tickets'));
+
 app.use(notFound);
 app.use(errorHandler);
 
