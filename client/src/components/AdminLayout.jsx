@@ -6,7 +6,6 @@ const TABS = [
   { to: '/admin/workers', label: 'nav.workers' },
   { to: '/admin/customers', label: 'admin.customers' },
   { to: '/admin/bookings', label: 'nav.bookings' },
-  { to: '/admin/tickets', label: 'nav.tickets' },
   { to: '/admin/users', label: 'admin.verification' },
 ];
 

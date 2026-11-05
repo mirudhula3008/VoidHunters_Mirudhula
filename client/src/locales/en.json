@@ -32,8 +32,7 @@
       "admin": "Admin"
     },
     "switchToDark": "Switch to dark mode",
-    "switchToLight": "Switch to light mode",
-    "tickets": "Tickets"
+    "switchToLight": "Switch to light mode"
   },
   "hero": {
     "eyebrow": "Hyperlocal · On-demand · Verified",
@@ -615,8 +614,7 @@
       "user": "users",
       "worker": "workers",
       "customer": "customers",
-      "booking": "bookings",
-      "ticket": "tickets"
+      "booking": "bookings"
     },
     "overviewTitle": "Platform overview",
     "paymentsRefunded": "{{count}} payment(s) refunded.",
@@ -812,51 +810,71 @@
     "vehicle_ac": "AC Gas Refill (Vehicle)",
     "breakdown": "Doorstep Breakdown Assistance"
   },
-  "support": {
-    "title": "Customer Support",
-    "subtitle": "Raise a ticket and our team will look into it",
+  "assistant": {
+    "title": "FixIT Assistant",
+    "subtitle": "Ask about your bookings, payments and more",
     "close": "Close",
-    "greeting": "Hi {{name}}! What problem can we help you with?",
-    "subject": "Subject",
-    "subjectPlaceholder": "e.g. Payment not updated",
-    "message": "Describe the problem",
-    "messagePlaceholder": "What happened, and which booking is it about?",
-    "severityLabel": "Severity",
-    "severity": {
-      "low": "Low",
-      "medium": "Medium",
-      "high": "High",
-      "critical": "Critical"
+    "send": "Send",
+    "placeholder": "Type your question…",
+    "thinking": "Checking…",
+    "failed": "Sorry, I couldn't check that just now. Please try again in a moment.",
+    "welcome": "Hi {{name}}! Ask me about your bookings, payments, reviews, earnings or dashboard.",
+    "yes": "Yes",
+    "no": "No",
+    "suggest": {
+      "bookings": "My bookings",
+      "payments": "My payments",
+      "reviews": "My reviews",
+      "earnings": "My earnings",
+      "dashboard": "My dashboard"
     },
-    "severityHelp": {
-      "low": "A question or small issue",
-      "medium": "Something isn't working",
-      "high": "A job or payment is affected",
-      "critical": "Safety issue or money lost"
+    "links": {
+      "myBookings": "Open My Bookings",
+      "services": "Open Services",
+      "requests": "Open Requests",
+      "jobs": "Open Jobs",
+      "earnings": "Open Earnings",
+      "reviews": "Open Reviews",
+      "profile": "Open Profile"
     },
-    "statusLabel": "Status",
-    "status": {
-      "open": "Open",
-      "in_progress": "In progress",
-      "resolved": "Resolved"
-    },
-    "total": "Total",
-    "raiseTicket": "Raise ticket",
-    "sending": "Sending…",
-    "raised": "Ticket {{ref}} raised",
-    "viewTickets": "View my tickets",
-    "raiseAnother": "Raise another",
-    "ticketsRaised": "Tickets raised",
-    "ticketsSubtitle": "Every ticket you've raised, newest first. Use the chat button to raise a new one.",
-    "raisedOn": "Raised on",
-    "raisedBy": "Raised by",
-    "noTickets": "You haven't raised any tickets yet.",
-    "noMatchingTickets": "No tickets match these filters.",
-    "errors": {
-      "subject": "Please enter a subject",
-      "message": "Please describe the problem in at least 10 characters",
-      "severity": "Please choose a severity",
-      "failed": "Could not raise your ticket. Please try again."
+    "replies": {
+      "greeting": "Hello {{name}}! What would you like to know about your account?",
+      "thanks": "You're welcome! Happy to help any time.",
+      "help": "I can tell you about your bookings, payments, refunds, reviews, earnings and dashboard, and explain how to book, pay, cancel or leave a review.",
+      "outOfScope": "Thanks for asking! I'm sorry, that's outside what I can help with, as I only know about your FixIT account. Try asking about your bookings, payments, reviews or earnings, and I'll gladly help.",
+      "complaint": "I'm sorry you're dealing with this. I can't file complaints or connect you to a person from this chat. If you're in danger, please call 112 straight away.",
+      "settings": "Use the moon or sun icon at the top to switch between dark and light mode, and the globe menu to change language.",
+      "customerBookings": "Active bookings: {{active}}. Completed: {{completed}}.",
+      "customerNextBooking": "Next: {{service}} with {{name}} on {{scheduleDate}}, {{time}} ({{status}}).",
+      "customerUnpaid": "Unpaid active bookings: {{count}}, {{amount}} in total.",
+      "customerNothingUnpaid": "You have no unpaid active bookings.",
+      "customerTotalPaid": "You've paid {{amount}} in total so far.",
+      "customerLastPayment": "Your last payment was {{amount}} by {{method}} on {{date}}.",
+      "customerRefundCount": "Refunded payments: {{count}}.",
+      "customerRefunds": "Refunds: {{count}}, {{amount}} in total.",
+      "customerNoRefunds": "You haven't had any refunds.",
+      "refundRule": "If a paid booking is cancelled or declined, it's refunded automatically.",
+      "customerReviews": "Reviews written: {{written}}. Completed jobs still to review: {{waiting}} of {{completed}}.",
+      "customerNoEarnings": "Earnings are for worker accounts. On your customer account, you've paid {{amount}} in total.",
+      "customerAccount": "You can view and change your details on your profile.",
+      "customerHowCancel": "Open My Bookings, find the booking and choose Cancel booking. If it was already paid, it's refunded automatically.",
+      "customerHowPay": "Open My Bookings and choose Pay now on the booking. You can pay by UPI, card, wallet or cash.",
+      "customerHowReview": "Once a job is completed, open My Bookings and leave a review. You can give stars, write a comment and add a photo.",
+      "customerHowBook": "Open Services, pick a service and a job, choose a worker and press Book Now. The FixIT Choice badge marks our top recommendation.",
+      "workerBookings": "New requests waiting: {{requested}}. Jobs in hand: {{inHand}}.",
+      "workerNextJob": "Next: {{service}} for {{name}} on {{scheduleDate}}, {{time}} ({{status}}).",
+      "workerEarnings": "Your take-home pay: today {{todayAmount}}, this week {{weekAmount}}, this month {{monthAmount}}, all time {{lifetimeAmount}} (jobs: {{jobs}}).",
+      "workerPayout": "Pending payout: {{amount}}. These figures are after the {{percent}}% platform commission.",
+      "workerAwaiting": "Paid up front for unfinished jobs: {{amount}} (jobs: {{jobs}}).",
+      "workerReviews": "Average rating: {{rating}}★ (reviews: {{count}}).",
+      "workerNoReviews": "You don't have any reviews yet.",
+      "workerLatestReview": "Latest review ({{rating}}★): “{{comment}}”",
+      "workerAccount": "Account: {{accountStatus}}. ID verified: {{verified}}. Taking new jobs: {{availability}}.",
+      "workerRefund": "If a paid booking is cancelled or declined, the customer is refunded automatically and it doesn't count towards your earnings.",
+      "workerHowCancel": "Open Requests to accept or decline a new booking.",
+      "workerHowPay": "Customers pay for their bookings. You can follow what you've earned on your Earnings page.",
+      "workerHowReview": "Customers review you once a job is completed. You can read them all on your Reviews page.",
+      "workerHowBook": "Customers find and book you. New bookings appear on your Requests page for you to accept."
     }
   }
 }

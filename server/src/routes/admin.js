@@ -3,7 +3,6 @@ const { protect, authorize } = require('../middleware/auth');
 const upload = require('../middleware/upload');
 const { getStats, listUsers, setWorkerVerification } = require('../controllers/adminController');
 const m = require('../controllers/adminManagementController');
-const { listTickets, setTicketStatus } = require('../controllers/ticketController');
 
 const router = express.Router();
 
@@ -21,9 +20,6 @@ router.get('/workers/:id', m.getWorkerProfile);
 router.get('/workers/:id/status-history', m.getStatusHistory);
 router.patch('/workers/:id/status', m.setWorkerStatus);
 router.put('/workers/:id/verify', setWorkerVerification);
-
-router.get('/tickets', listTickets);
-router.patch('/tickets/:id/status', setTicketStatus);
 
 router.post('/evidence', upload.single('evidence'), m.uploadEvidence);
 

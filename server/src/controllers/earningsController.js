@@ -46,10 +46,10 @@ function period(earnings, jobs) {
   return { earnings: round(earnings), jobs, commission: commissionOf(earnings), net: netOf(earnings) };
 }
 
-// GET /api/earnings/summary
-const getSummary = asyncHandler(async (req, res) => {
+// The figures on a worker's earnings page. Also used by the chat assistant.
+async function buildEarningsSummary(user) {
   const { today, week, month } = boundaries();
-  const workerId = req.user._id;
+  const workerId = user._id;
 
   const [[totals = {}], [awaiting = {}]] = await Promise.all([
     Payment.aggregate([
@@ -82,7 +82,7 @@ const getSummary = asyncHandler(async (req, res) => {
   const lifetime = totals.lifetime || 0;
   const lifetimeJobs = totals.lifetimeJobs || 0;
 
-  res.json({
+  return {
     today: period(totals.today, totals.todayJobs || 0),
     thisWeek: period(totals.week, totals.weekJobs || 0),
     thisMonth: period(totals.month, totals.monthJobs || 0),
@@ -98,10 +98,15 @@ const getSummary = asyncHandler(async (req, res) => {
     // What the platform still owes the worker (their share of unsettled payments).
     pendingPayouts: netOf(totals.unsettled),
     awaitingCompletion: { amount: round(awaiting.amount), jobs: awaiting.jobs || 0 },
-    averageRating: req.user.averageRating || 0,
-    totalReviews: req.user.totalReviews || 0,
+    averageRating: user.averageRating || 0,
+    totalReviews: user.totalReviews || 0,
     averageJobValue: lifetimeJobs ? round(lifetime / lifetimeJobs) : 0,
-  });
+  };
+}
+
+// GET /api/earnings/summary
+const getSummary = asyncHandler(async (req, res) => {
+  res.json(await buildEarningsSummary(req.user));
 });
 
 // GET /api/earnings/history?period=daily|weekly|monthly
@@ -230,4 +235,4 @@ function methodLabel(method, details = {}) {
   return 'Cash';
 }
 
-module.exports = { getSummary, getHistory, getTransactions, methodLabel };
+module.exports = { buildEarningsSummary, getSummary, getHistory, getTransactions, methodLabel };

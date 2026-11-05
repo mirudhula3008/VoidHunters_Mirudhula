@@ -47,9 +47,6 @@ const EXACT = {
   'This worker was just updated by someone else. Please refresh.': 'server.staleWorker',
   'Please select a valid gender': 'auth.errors.chooseGender',
   'Please choose a job from the list for each service': 'server.chooseJobForService',
-  'Please enter a subject': 'support.errors.subject',
-  'Please describe the problem in at least 10 characters': 'support.errors.message',
-  'Please choose a severity': 'support.errors.severity',
   'Server error': 'common.error',
 };
 
