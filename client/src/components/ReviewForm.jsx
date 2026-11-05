@@ -81,7 +81,7 @@ export default function ReviewForm({ bookingId, workerName, onSubmitted }) {
       </label>
 
       <div>
-        <span className="text-sm font-medium text-slate-700">{t('review.addPhoto')}</span>
+        <span className="block text-sm font-medium text-slate-700">{t('review.addPhoto')}</span>
         {preview ? (
           <div className="relative mt-2 inline-block">
             <img src={preview} alt={t('review.photoAlt')} className="h-32 w-32 rounded-xl border border-slate-200 object-cover" />
