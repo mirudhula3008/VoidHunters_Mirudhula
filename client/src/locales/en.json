@@ -886,7 +886,7 @@
       "whichWorker": "I found more than one worker with that name. Which one do you mean?",
       "askWorkerName": "To see a summary of a worker's reviews, type their name or pick one below.",
       "askCategory": "Happy to suggest someone. What do you need done?",
-      "suggestedWorkers": "Here are my top {{category}} suggestions near you, based on ratings, reviews, skills and experience.",
+      "suggestedWorkers": "Here are my top {{category}} suggestions within {{km}} km of you, based on ratings, reviews, skills and experience.",
       "noWorkersNearby": "I couldn't find available {{category}} workers near you right now. Please try another service or check back later.",
       "workerSuggest": "Suggestions are for customers looking for workers. To get recommended more often, keep your profile complete with all your skills, and collect good reviews.",
       "ticketsIntro": "Here are your latest tickets.",
@@ -894,7 +894,8 @@
       "workerEarningsIntro": "This month you've taken home {{monthAmount}} from jobs completed: {{jobs}}.",
       "workerEarningsUp": "That's up {{percent}}% on last month ({{lastMonthAmount}}).",
       "workerEarningsDown": "That's down {{percent}}% on last month ({{lastMonthAmount}}).",
-      "workerTopService": "Your best earner overall: {{service}}, {{amount}} from jobs: {{jobs}}."
+      "workerTopService": "Your best earner overall: {{service}}, {{amount}} from jobs: {{jobs}}.",
+      "suggestedWorkersFar": "No {{category}} workers are available within {{km}} km of your saved location, so here are the best rated further away, based on ratings, reviews, skills and experience. Please check the distance before booking."
     },
     "menuPrompt": "Sure, here's the main menu.",
     "suggestedForYou": "Suggested for you",

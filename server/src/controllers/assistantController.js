@@ -15,6 +15,7 @@ const MAX_MESSAGE = 500;
 const ACTIVE = ['requested', 'accepted', 'in_progress'];
 const MAX_CARD_ITEMS = 3;
 const SUGGEST_RADIUS_KM = 25;
+const ANYWHERE_KM = 21000; // Half the Earth's circumference, so nobody is out of range.
 const DEFAULT_POINT = { lat: 13.0827, lng: 80.2707 }; // Chennai
 
 // A reply is lines of text, cards, links and follow-up options. Text is sent as translation keys
@@ -215,17 +216,15 @@ async function customerSuggest(user, { message, params }) {
   if (!category) return { lines: [line('askCategory')], options: CATEGORY_OPTIONS };
 
   const [lng, lat] = user.location?.coordinates?.length === 2 ? user.location.coordinates : [DEFAULT_POINT.lng, DEFAULT_POINT.lat];
-  const workers = await findNearbyWorkers({
-    lat,
-    lng,
-    radiusKm: SUGGEST_RADIUS_KM,
-    match: { ...VISIBLE_WORKER, serviceCategory: category, availability: true },
-  });
+  const search = { lat, lng, match: { ...VISIBLE_WORKER, serviceCategory: category, availability: true } };
+  // Nearby workers first. With none nearby, still suggest the best-rated ones and say they're further away.
+  const nearby = await findNearbyWorkers({ ...search, radiusKm: SUGGEST_RADIUS_KM });
+  const workers = nearby.length ? nearby : await findNearbyWorkers({ ...search, radiusKm: ANYWHERE_KM });
   if (!workers.length) return { lines: [line('noWorkersNearby', { category })], options: follow('suggestWorker', 'menu') };
 
   const best = [...workers].sort((a, b) => Number(b.fixitChoice) - Number(a.fixitChoice) || b.recommendationScore - a.recommendationScore).slice(0, MAX_CARD_ITEMS);
   return {
-    lines: [line('suggestedWorkers', { category })],
+    lines: [line(nearby.length ? 'suggestedWorkers' : 'suggestedWorkersFar', { category, km: SUGGEST_RADIUS_KM })],
     cards: [
       {
         type: 'workers',
