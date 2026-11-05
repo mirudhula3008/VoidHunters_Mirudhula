@@ -44,23 +44,3 @@ export function PageCorners() {
     </>
   );
 }
-
-// Curves at the right of the navbar. The navy part needs the wider screens to clear the buttons.
-export function NavbarCorner() {
-  return (
-    <svg
-      className="pointer-events-none absolute right-0 top-0 hidden h-16 w-[300px] lg:block"
-      viewBox="0 0 300 64"
-      aria-hidden="true"
-    >
-      <defs>
-        <linearGradient id="navbar-sweep" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" style={{ stopColor: 'rgb(var(--c-blue-100))', stopOpacity: 0 }} />
-          <stop offset="1" style={{ stopColor: 'rgb(var(--c-blue-100))', stopOpacity: 1 }} />
-        </linearGradient>
-      </defs>
-      <path d="M40 0 H205 C225 35 265 60 300 64 H120 C95 45 60 20 40 0 Z" fill="url(#navbar-sweep)" />
-      <path d="M205 0 H300 V64 C265 60 225 35 205 0 Z" style={CORNER} className="hidden min-[1440px]:block" />
-    </svg>
-  );
-}
