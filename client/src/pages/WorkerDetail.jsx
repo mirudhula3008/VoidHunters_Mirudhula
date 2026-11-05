@@ -48,6 +48,7 @@ export default function WorkerDetail() {
   }
 
   const [lng, lat] = worker.location?.coordinates || [];
+  const chosenService = job ? worker.services?.find((s) => s.job === job) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-6">
@@ -120,8 +121,19 @@ export default function WorkerDetail() {
         {/* Booking sidebar */}
         <aside className="space-y-4 md:sticky md:top-24 md:self-start">
           <div className="card p-6">
-            <p className="caption">{t('worker.priceRange')}</p>
-            <p className="mt-1 text-3xl font-bold text-navy">{worker.minPrice == null ? t('worker.priceOnRequest') : formatPriceRange(worker.minPrice, worker.maxPrice)}</p>
+            {chosenService ? (
+              <>
+                <p className="caption">{serviceLabel(chosenService.name, t)}</p>
+                <p className="mt-1 text-3xl font-bold text-navy">
+                  {formatPrice(chosenService.price)} <span className="text-sm font-normal text-slate-400">{unitLabel(chosenService.unit, t)}</span>
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="caption">{t('worker.priceRange')}</p>
+                <p className="mt-1 text-3xl font-bold text-navy">{worker.minPrice == null ? t('worker.priceOnRequest') : formatPriceRange(worker.minPrice, worker.maxPrice)}</p>
+              </>
+            )}
             <div className="mt-3">
               {worker.availability ? (
                 <span className="badge badge-available">
@@ -135,8 +147,8 @@ export default function WorkerDetail() {
               <p className="mt-5 rounded-xl bg-slate-50 px-4 py-3 text-sm text-slate-500">{t('worker.loginAsCustomer')}</p>
             ) : (
               <Link
-                to={`/book/${worker._id}`}
-                state={{ worker, job }}
+                to={chosenService ? `/book/${worker._id}?job=${job}` : `/book/${worker._id}`}
+                state={{ worker }}
                 className={`btn mt-5 w-full py-3 ${worker.availability ? 'btn-amber' : 'pointer-events-none bg-slate-200 text-slate-500'}`}
                 aria-disabled={!worker.availability}
               >

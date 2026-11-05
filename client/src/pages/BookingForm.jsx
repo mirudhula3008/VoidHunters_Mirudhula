@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import DateTimePicker from '../components/DateTimePicker';
 import LocationPicker from '../components/LocationPicker';
 import { buttonStyles } from '../components/BookingCard';
@@ -15,9 +15,11 @@ import { serviceLabel } from '../data/categories';
 const toLatLng = (loc) => (loc?.coordinates?.length === 2 ? { lat: loc.coordinates[1], lng: loc.coordinates[0] } : null);
 
 // /book/:workerId — reached from "Book Now" on the worker detail page (Module 2),
-// which passes the worker in router state. Falls back to fetching it.
+// which passes the worker in router state (falls back to fetching it) and the chosen job in ?job=.
 export default function BookingForm() {
   const { workerId } = useParams();
+  const [searchParams] = useSearchParams();
+  const job = searchParams.get('job');
   const { state } = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -25,10 +27,7 @@ export default function BookingForm() {
 
   const [worker, setWorker] = useState(state?.worker?._id === workerId ? state.worker : null);
   const [loadError, setLoadError] = useState(null);
-  // The job the customer searched for is already selected.
-  const [serviceName, setServiceName] = useState(
-    state?.worker?.services?.find((s) => state.job && s.job === state.job)?.name || ''
-  );
+  const [serviceName, setServiceName] = useState('');
   const [schedule, setSchedule] = useState({ date: '', time: '' });
   const [offer, setOffer] = useState('');
   const [description, setDescription] = useState('');
@@ -43,7 +42,9 @@ export default function BookingForm() {
       .catch((err) => setLoadError(errorMessage(err, t('worker.loadError'))));
   }, [workerId, worker]);
 
-  const service = worker?.services?.find((s) => s.name === serviceName);
+  // The job chosen on the job list is final here; the service list is only for workers opened without one.
+  const chosenService = job ? worker?.services?.find((s) => s.job === job) : null;
+  const service = chosenService || worker?.services?.find((s) => s.name === serviceName);
 
   useEffect(() => {
     if (service) setOffer(String(service.price));
@@ -72,7 +73,7 @@ export default function BookingForm() {
     try {
       const created = await createBooking({
         workerId,
-        serviceName,
+        serviceName: service.name,
         description,
         scheduledDate: schedule.date,
         scheduledTime: schedule.time,
@@ -99,8 +100,16 @@ export default function BookingForm() {
       <form onSubmit={handleSubmit} className="mt-6 grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0 space-y-6">
           <section className="card p-5">
-            <h2 className="font-semibold text-slate-900">{t('booking.step1')}</h2>
-            {worker.services?.length ? (
+            <h2 className="font-semibold text-slate-900">{t(chosenService ? 'booking.yourService' : 'booking.step1')}</h2>
+            {chosenService ? (
+              <div className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-blue-600 bg-blue-50 p-3">
+                <span className="min-w-0 font-medium text-slate-800">{serviceLabel(chosenService.name, t)}</span>
+                <span className="flex-none font-semibold text-slate-900">
+                  {formatPrice(chosenService.price)}{' '}
+                  <span className="text-xs font-normal text-slate-400">{unitLabel(chosenService.unit, t)}</span>
+                </span>
+              </div>
+            ) : worker.services?.length ? (
               <div className="mt-3 space-y-2">
                 {worker.services.map((s) => (
                   <label
@@ -160,7 +169,7 @@ export default function BookingForm() {
             <h2 className="font-semibold text-slate-900">{t('booking.summary')}</h2>
             <dl className="mt-3 space-y-2 text-sm">
               <Row label={t('payment.worker')} value={worker.name} />
-              <Row label={t('payment.service')} value={service?.name || '—'} />
+              <Row label={t('payment.service')} value={service ? serviceLabel(service.name, t) : '—'} />
               <Row
                 label={t('payment.when')}
                 value={schedule.date && schedule.time ? `${formatScheduleDate(schedule.date)}, ${formatTime(schedule.time)}` : '—'}

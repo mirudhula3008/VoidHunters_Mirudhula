@@ -5,7 +5,7 @@ const EMPTY = { name: '', price: '', unit: 'per job' };
 // Stored values stay in English; only the labels are translated.
 const UNITS = ['per job', 'per hour', 'per day', 'per sq ft', 'per visit'];
 
-// Editable list of { name, price, unit, job } rows. With `jobs`, the name is picked from that list.
+// Editable list of { name, price, unit, job } rows. The name comes from the category's job list.
 export default function ServicesEditor({ services, onChange, jobs = [] }) {
   const { t } = useLanguage();
   const update = (i, key, value) => onChange(services.map((s, idx) => (idx === i ? { ...s, [key]: value } : s)));
@@ -20,33 +20,22 @@ export default function ServicesEditor({ services, onChange, jobs = [] }) {
       {services.length === 0 && <p className="text-sm text-slate-400">{t('servicesEditor.none')}</p>}
       {services.map((s, i) => (
         <div key={s._id || i} className="grid grid-cols-[1fr_96px_auto] gap-2 sm:grid-cols-[1fr_110px_110px_auto]">
-          {jobs.length > 0 ? (
-            <select
-              className={controlClass}
-              value={s.job || ''}
-              onChange={(e) => chooseJob(i, e.target.value)}
-              aria-label={`${t('servicesEditor.name')} ${i + 1}`}
-              required
-            >
-              <option value="">{t('servicesEditor.chooseJob')}</option>
-              {jobs
-                .filter((j) => j.id === s.job || !services.some((other) => other.job === j.id))
-                .map((j) => (
-                  <option key={j.id} value={j.id}>
-                    {t(`jobs.${j.id}`)}
-                  </option>
-                ))}
-            </select>
-          ) : (
-            <input
-              className={controlClass}
-              placeholder={t('servicesEditor.name')}
-              value={s.name}
-              onChange={(e) => update(i, 'name', e.target.value)}
-              aria-label={`${t('servicesEditor.name')} ${i + 1}`}
-              required
-            />
-          )}
+          <select
+            className={controlClass}
+            value={jobs.some((j) => j.id === s.job) ? s.job : ''}
+            onChange={(e) => chooseJob(i, e.target.value)}
+            aria-label={`${t('servicesEditor.name')} ${i + 1}`}
+            required
+          >
+            <option value="">{t('servicesEditor.chooseJob')}</option>
+            {jobs
+              .filter((j) => j.id === s.job || !services.some((other) => other.job === j.id))
+              .map((j) => (
+                <option key={j.id} value={j.id}>
+                  {t(`jobs.${j.id}`)}
+                </option>
+              ))}
+          </select>
           <input
             className={controlClass}
             type="number"
@@ -79,13 +68,19 @@ export default function ServicesEditor({ services, onChange, jobs = [] }) {
           </button>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() => onChange([...services, { ...EMPTY }])}
-        className="text-sm font-medium text-blue-600 hover:underline"
-      >
-        {t('servicesEditor.add')}
-      </button>
+      {jobs.length === 0 ? (
+        <p className="text-sm text-slate-400">{t('servicesEditor.chooseCategoryFirst')}</p>
+      ) : (
+        services.length < jobs.length && (
+          <button
+            type="button"
+            onClick={() => onChange([...services, { ...EMPTY }])}
+            className="text-sm font-medium text-blue-600 hover:underline"
+          >
+            {t('servicesEditor.add')}
+          </button>
+        )
+      )}
     </div>
   );
 }

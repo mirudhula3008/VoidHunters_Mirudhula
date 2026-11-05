@@ -1,14 +1,104 @@
 // Service categories are fixed for the hackathon, so they live in code
 // rather than a collection. `id` is what gets stored in User.serviceCategory.
-// Categories with `jobs` ask the customer to pick a job before showing workers;
+// Customers pick a job in the category before workers are shown;
 // a job id is stored on each of the worker's services (User.services.job).
 const categories = [
-  { id: 'plumbing', name: 'Plumbing', icon: '🔧', description: 'Leaks, taps, pipes, fittings and drainage' },
-  { id: 'electrical', name: 'Electrical', icon: '💡', description: 'Wiring, switches, fans, lights and appliances' },
-  { id: 'carpentry', name: 'Carpentry', icon: '🪚', description: 'Furniture repair, doors, shelves and fittings' },
-  { id: 'painting', name: 'Painting', icon: '🎨', description: 'Interior, exterior and touch-up painting' },
-  { id: 'cleaning', name: 'Cleaning', icon: '🧹', description: 'Home, kitchen, bathroom and deep cleaning' },
-  { id: 'appliance_repair', name: 'Appliance Repair', icon: '🔌', description: 'AC, fridge, washing machine, TV and more' },
+  {
+    id: 'plumbing',
+    name: 'Plumbing',
+    icon: '🔧',
+    description: 'Leaks, taps, pipes, fittings and drainage',
+    jobs: [
+      { id: 'pipe_leak', name: 'Pipe Leak Repair' },
+      { id: 'tap_install', name: 'Tap/Faucet Installation' },
+      { id: 'toilet', name: 'Toilet Repair & Installation' },
+      { id: 'plumbing_tank', name: 'Water Tank Cleaning' },
+      { id: 'drainage', name: 'Drainage/Blockage Clearing' },
+      { id: 'purifier_install', name: 'Water Purifier Installation' },
+      { id: 'bathroom_fitting', name: 'Bathroom Fitting & Fixtures' },
+      { id: 'motor_pump', name: 'Motor/Pump Repair' },
+    ],
+  },
+  {
+    id: 'electrical',
+    name: 'Electrical',
+    icon: '💡',
+    description: 'Wiring, switches, fans, lights and appliances',
+    jobs: [
+      { id: 'wiring', name: 'Wiring & Rewiring' },
+      { id: 'switch_socket', name: 'Switch/Socket Installation' },
+      { id: 'fan', name: 'Fan Installation & Repair' },
+      { id: 'inverter', name: 'Inverter/UPS Installation' },
+      { id: 'mcb', name: 'MCB/Fuse Box Repair' },
+      { id: 'led', name: 'LED Light Installation' },
+      { id: 'doorbell_wiring', name: 'Doorbell & Intercom Wiring' },
+      { id: 'earthing', name: 'Earthing & Safety Check' },
+    ],
+  },
+  {
+    id: 'carpentry',
+    name: 'Carpentry',
+    icon: '🪚',
+    description: 'Furniture repair, doors, shelves and fittings',
+    jobs: [
+      { id: 'furniture_repair', name: 'Furniture Repair' },
+      { id: 'door_window', name: 'Door/Window Fitting' },
+      { id: 'shelf_cabinet', name: 'Shelf & Cabinet Installation' },
+      { id: 'bed_wardrobe', name: 'Bed & Wardrobe Assembly' },
+      { id: 'wood_polish', name: 'Wood Polishing & Finishing' },
+      { id: 'kitchen_cabinet', name: 'Kitchen Cabinet Work' },
+      { id: 'partition', name: 'Partition & False Wall' },
+      { id: 'lock_handle', name: 'Lock & Handle Replacement' },
+    ],
+  },
+  {
+    id: 'painting',
+    name: 'Painting',
+    icon: '🎨',
+    description: 'Interior, exterior and touch-up painting',
+    jobs: [
+      { id: 'interior_paint', name: 'Interior Wall Painting' },
+      { id: 'exterior_paint', name: 'Exterior Wall Painting' },
+      { id: 'texture', name: 'Texture/Stucco Finish' },
+      { id: 'wood_metal_paint', name: 'Wood & Metal Painting' },
+      { id: 'waterproof_coat', name: 'Waterproof Coating' },
+      { id: 'primer_putty', name: 'Primer & Putty Work' },
+      { id: 'ceiling_paint', name: 'Ceiling Painting' },
+      { id: 'touch_up', name: 'Touch-Up & Patch Painting' },
+    ],
+  },
+  {
+    id: 'cleaning',
+    name: 'Cleaning',
+    icon: '🧹',
+    description: 'Home, kitchen, bathroom and deep cleaning',
+    jobs: [
+      { id: 'home_deep', name: 'Full Home Deep Cleaning' },
+      { id: 'kitchen_deep', name: 'Kitchen Deep Cleaning' },
+      { id: 'bathroom_deep', name: 'Bathroom Deep Cleaning' },
+      { id: 'sofa_carpet', name: 'Sofa & Carpet Shampooing' },
+      { id: 'cleaning_tank', name: 'Water Tank Cleaning' },
+      { id: 'post_construction', name: 'Post-Construction Cleanup' },
+      { id: 'office_clean', name: 'Office/Commercial Cleaning' },
+      { id: 'window_glass', name: 'Window & Glass Cleaning' },
+    ],
+  },
+  {
+    id: 'appliance_repair',
+    name: 'Appliance Repair',
+    icon: '🔌',
+    description: 'AC, fridge, washing machine, TV and more',
+    jobs: [
+      { id: 'ac_service', name: 'AC Service & Gas Refill' },
+      { id: 'fridge', name: 'Refrigerator Repair' },
+      { id: 'washer', name: 'Washing Machine Repair' },
+      { id: 'tv', name: 'TV/Monitor Repair' },
+      { id: 'microwave', name: 'Microwave/Oven Repair' },
+      { id: 'geyser', name: 'Geyser/Water Heater Repair' },
+      { id: 'chimney', name: 'Chimney & Hob Service' },
+      { id: 'mixer', name: 'Mixer/Grinder Repair' },
+    ],
+  },
   {
     id: 'construction',
     name: 'Construction',
@@ -55,12 +145,27 @@ const categories = [
       { id: 'cable_wiring', name: 'Cable Routing & Wiring' },
     ],
   },
-  { id: 'mechanic', name: 'Mechanic', icon: '🛠️', description: 'Car and bike repair, servicing, breakdown help' },
+  {
+    id: 'mechanic',
+    name: 'Automotive Service Technician',
+    icon: '🛠️',
+    description: 'Car and bike repair, servicing, breakdown help',
+    jobs: [
+      { id: 'car_service', name: 'Car General Service' },
+      { id: 'bike_service', name: 'Bike General Service' },
+      { id: 'oil_change', name: 'Engine Oil & Filter Change' },
+      { id: 'brake_pads', name: 'Brake Pad Replacement' },
+      { id: 'battery', name: 'Battery Jumpstart & Replacement' },
+      { id: 'tyre', name: 'Tyre Puncture & Replacement' },
+      { id: 'vehicle_ac', name: 'AC Gas Refill (Vehicle)' },
+      { id: 'breakdown', name: 'Doorstep Breakdown Assistance' },
+    ],
+  },
 ];
 
 const categoryIds = categories.map((c) => c.id);
 
-// Jobs of one category; empty for categories that don't use the job step.
+// Jobs of one category; empty for an unknown category.
 const jobsFor = (categoryId) => categories.find((c) => c.id === categoryId)?.jobs || [];
 
 module.exports = { categories, categoryIds, jobsFor };

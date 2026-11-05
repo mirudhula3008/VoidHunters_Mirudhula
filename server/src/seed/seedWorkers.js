@@ -15,93 +15,104 @@ const { jobsFor } = require('../data/categories');
 
 const SEED_DOMAIN = '@seed.local';
 
-// [name, category, area, lat, lng, negotiable, available, years, services: [name, price, unit?]]
+// Starting price per job: [price, unit (default "per job")]. Each worker's price varies a little around it.
+const JOB_PRICES = {
+  pipe_leak: [400], tap_install: [250], toilet: [900], plumbing_tank: [800],
+  drainage: [350], purifier_install: [450], bathroom_fitting: [900], motor_pump: [600],
+  wiring: [1500], switch_socket: [150], fan: [300], inverter: [900],
+  mcb: [300], led: [200], doorbell_wiring: [350], earthing: [700],
+  furniture_repair: [600], door_window: [700], shelf_cabinet: [1200], bed_wardrobe: [1000],
+  wood_polish: [40, 'per sq ft'], kitchen_cabinet: [4000], partition: [120, 'per sq ft'], lock_handle: [250],
+  interior_paint: [18, 'per sq ft'], exterior_paint: [25, 'per sq ft'], texture: [65, 'per sq ft'], wood_metal_paint: [900],
+  waterproof_coat: [35, 'per sq ft'], primer_putty: [15, 'per sq ft'], ceiling_paint: [20, 'per sq ft'], touch_up: [600],
+  home_deep: [3500], kitchen_deep: [1200], bathroom_deep: [500], sofa_carpet: [900],
+  cleaning_tank: [750], post_construction: [4000], office_clean: [3000], window_glass: [600],
+  ac_service: [1800], fridge: [550], washer: [450], tv: [650],
+  microwave: [350], geyser: [450], chimney: [700], mixer: [250],
+  mason: [900, 'per day'], tile_flooring: [55, 'per sq ft'], plastering: [32, 'per sq ft'], waterproofing: [42, 'per sq ft'],
+  false_ceiling: [88, 'per sq ft'], welding: [190, 'per sq ft'], renovation: [420, 'per sq ft'], demolition: [2700],
+  home_shifting: [4000], office_shifting: [4400], furniture_assembly: [950], packing: [1350], loading: [750], vehicle_transport: [2600],
+  cctv_install: [1100], cctv_repair: [480], dvr_nvr: [780], alarm: [1900],
+  video_doorbell: [880], access_control: [2600], intercom: [1700], cable_wiring: [28, 'per sq ft'],
+  car_service: [2400], bike_service: [650], oil_change: [800], brake_pads: [900],
+  battery: [400], tyre: [150], vehicle_ac: [1500], breakdown: [500],
+};
+
+// [name, category, area, lat, lng, negotiable, available, years, jobs]
+// `jobs` holds positions in the category's job list (data/categories.js), so '013' = its 1st, 2nd and 4th jobs.
 const WORKERS = [
-  ['Ravi Kumar', 'plumbing', 'T. Nagar', 13.0418, 80.2341, true, true, 8,
-    [['Tap / faucet repair', 250], ['Pipe leak fixing', 400], ['Bathroom fitting installation', 900]]],
-  ['Senthil Murugan', 'plumbing', 'Velachery', 12.975, 80.2212, false, true, 5,
-    [['Drain unclogging', 350], ['Water tank cleaning', 800], ['Motor pump repair', 600]]],
-  ['Abdul Rahman', 'plumbing', 'Anna Nagar', 13.085, 80.2101, true, false, 12,
-    [['Tap / faucet repair', 200], ['Geyser installation', 700], ['Full bathroom plumbing', 3500]]],
+  ['Ravi Kumar', 'plumbing', 'T. Nagar', 13.0418, 80.2341, true, true, 8, '0167'],
+  ['Senthil Murugan', 'plumbing', 'Saidapet', 13.0213, 80.2231, false, true, 5, '012345'],
+  ['Abdul Rahman', 'plumbing', 'Anna Nagar', 13.085, 80.2101, true, false, 12, '0234'],
+  ['Kannan Velu', 'plumbing', 'Royapuram', 13.1137, 80.2942, true, true, 9, '456701'],
+  ['Bala Subramani', 'plumbing', 'Mandaveli', 13.0266, 80.2618, false, true, 6, '236704'],
 
-  ['Karthik Raja', 'electrical', 'Adyar', 13.0012, 80.2565, true, true, 6,
-    [['Switch / socket repair', 150], ['Ceiling fan installation', 350], ['Full house wiring check', 1500]]],
-  ['Prakash Babu', 'electrical', 'Mylapore', 13.0339, 80.2619, false, true, 10,
-    [['Light fitting installation', 200], ['MCB / fuse replacement', 300], ['Inverter installation', 900]]],
-  ['Manoj Kumar', 'electrical', 'Porur', 13.0382, 80.1565, true, true, 3,
-    [['Switch / socket repair', 120], ['Ceiling fan repair', 250], ['AC point wiring', 800]]],
+  ['Karthik Raja', 'electrical', 'Adyar', 13.0012, 80.2565, true, true, 6, '012345'],
+  ['Prakash Babu', 'electrical', 'Mylapore', 13.0339, 80.2619, false, true, 10, '456701'],
+  ['Manoj Kumar', 'electrical', 'Vadapalani', 13.05, 80.2121, true, true, 3, '236704'],
 
-  ['Murugan Selvam', 'carpentry', 'Guindy', 13.0067, 80.2206, true, true, 15,
-    [['Door lock fitting', 300], ['Furniture repair', 600], ['Wardrobe assembly', 1200]]],
-  ['Joseph Antony', 'carpentry', 'Kodambakkam', 13.0521, 80.2255, false, false, 9,
-    [['Hinge / handle replacement', 200], ['Bed assembly', 800], ['Custom shelf making', 2500]]],
-  ['Ganesh Pandian', 'carpentry', 'Chromepet', 12.9516, 80.1462, true, true, 7,
-    [['Furniture repair', 500], ['Window frame repair', 700], ['Modular kitchen fitting', 4000]]],
+  ['Murugan Selvam', 'carpentry', 'Ashok Nagar', 13.0359, 80.2102, true, true, 15, '012345'],
+  ['Joseph Antony', 'carpentry', 'Kodambakkam', 13.0521, 80.2255, false, false, 9, '0145'],
+  ['Ganesh Pandian', 'carpentry', 'Nandanam', 13.0295, 80.24, true, true, 7, '456701'],
+  ['Arul Doss', 'carpentry', 'Aminjikarai', 13.0702, 80.2248, false, true, 11, '236704'],
 
-  ['Suresh Babu', 'painting', 'Egmore', 13.0732, 80.2609, true, true, 11,
-    [['Single wall painting', 1200], ['1 BHK interior painting', 8000], ['Waterproofing coat', 3000]]],
-  ['Vijay Anand', 'painting', 'Perambur', 13.121, 80.2329, false, true, 4,
-    [['Touch-up painting', 600], ['Door / grill painting', 900], ['2 BHK interior painting', 14000]]],
-  ['Dinesh Kumar', 'painting', 'Tambaram', 12.9249, 80.1, true, true, 6,
-    [['Single wall painting', 1000], ['Exterior wall painting', 6000], ['Texture painting', 4500]]],
+  ['Suresh Babu', 'painting', 'Egmore', 13.0732, 80.2609, true, true, 11, '012345'],
+  ['Vijay Anand', 'painting', 'Perambur', 13.121, 80.2329, false, true, 4, '456701'],
+  ['Dinesh Kumar', 'painting', 'Choolaimedu', 13.0637, 80.2265, true, true, 6, '236704'],
 
-  ['Lakshmi Devi', 'cleaning', 'Nungambakkam', 13.0569, 80.2425, false, true, 5,
-    [['Kitchen deep cleaning', 1200], ['Bathroom cleaning', 500], ['Full home deep cleaning', 3500]]],
-  ['Meena Kumari', 'cleaning', 'Besant Nagar', 13.0002, 80.2668, true, true, 3,
-    [['Sofa shampooing', 900], ['Bathroom cleaning', 450], ['Move-in / move-out cleaning', 4000]]],
-  ['Selvi Rajan', 'cleaning', 'Royapettah', 13.054, 80.264, true, false, 7,
-    [['Kitchen deep cleaning', 1000], ['Window & balcony cleaning', 600], ['Full home deep cleaning', 3000]]],
+  ['Lakshmi Devi', 'cleaning', 'Nungambakkam', 13.0569, 80.2425, false, true, 5, '012345'],
+  ['Meena Kumari', 'cleaning', 'Besant Nagar', 13.0002, 80.2668, true, true, 3, '456701'],
+  ['Selvi Rajan', 'cleaning', 'Royapettah', 13.054, 80.264, true, false, 7, '0127'],
+  ['Revathi Sekar', 'cleaning', 'Chepauk', 13.062, 80.279, false, true, 8, '236704'],
 
-  ['Arjun Krishnan', 'appliance_repair', 'Ashok Nagar', 13.0359, 80.2102, true, true, 9,
-    [['Washing machine repair', 450], ['Refrigerator repair', 550], ['AC service', 600], ['Microwave repair', 350]]],
-  ['Sathish Kumar', 'appliance_repair', 'Saidapet', 13.0213, 80.2231, false, true, 6,
-    [['AC gas refill', 1800], ['Refrigerator repair', 500], ['Water purifier service', 400]]],
-  ['Rahim Basha', 'appliance_repair', 'Kilpauk', 13.0825, 80.2428, true, false, 11,
-    [['TV repair', 650], ['Washing machine repair', 400], ['Geyser repair', 450]]],
+  ['Arjun Krishnan', 'appliance_repair', 'Ashok Nagar', 13.0359, 80.2102, true, true, 9, '012345'],
+  ['Sathish Kumar', 'appliance_repair', 'Saidapet', 13.0213, 80.2231, false, true, 6, '456701'],
+  ['Rahim Basha', 'appliance_repair', 'Kilpauk', 13.0825, 80.2428, true, false, 11, '2356'],
+  ['Vignesh Raja', 'appliance_repair', 'Kolathur', 13.124, 80.219, true, true, 5, '236704'],
 
-  // In categories with a job list, service names must match a job name in data/categories.js.
-  ['Venkatesh Iyer', 'construction', 'Alwarpet', 13.0335, 80.2547, true, true, 16,
-    [['Mason / Bricklaying', 900, 'per day'], ['Plastering & Cementing', 35, 'per sq ft'], ['Bathroom / Kitchen Renovation', 450, 'per sq ft'], ['Demolition & Debris Removal', 2500]]],
-  ['Balaji Sundaram', 'construction', 'Vadapalani', 13.05, 80.2121, true, true, 9,
-    [['Tile & Flooring Work', 55, 'per sq ft'], ['Mason / Bricklaying', 850, 'per day'], ['Bathroom / Kitchen Renovation', 400, 'per sq ft']]],
-  ['Naveen Raj', 'construction', 'Teynampet', 13.0418, 80.2508, false, true, 6,
-    [['Roof Waterproofing & Leak Repair', 40, 'per sq ft'], ['False Ceiling Installation', 85, 'per sq ft'], ['Plastering & Cementing', 30, 'per sq ft']]],
-  ['Imran Khan', 'construction', 'Aminjikarai', 13.0702, 80.2248, true, true, 11,
-    [['Steel & Iron Grillwork (Welding)', 180, 'per sq ft'], ['Demolition & Debris Removal', 3000], ['False Ceiling Installation', 90, 'per sq ft']]],
-  ['Mani Vannan', 'construction', 'Kodambakkam', 13.0521, 80.2255, false, true, 13,
-    [['Tile & Flooring Work', 60, 'per sq ft'], ['Roof Waterproofing & Leak Repair', 45, 'per sq ft'], ['Steel & Iron Grillwork (Welding)', 200, 'per sq ft']]],
+  ['Venkatesh Iyer', 'construction', 'Alwarpet', 13.0335, 80.2547, true, true, 16, '0267'],
+  ['Balaji Sundaram', 'construction', 'Vadapalani', 13.05, 80.2121, true, true, 9, '106'],
+  ['Naveen Raj', 'construction', 'Teynampet', 13.0418, 80.2508, false, true, 6, '342'],
+  ['Imran Khan', 'construction', 'Aminjikarai', 13.0702, 80.2248, true, true, 11, '574'],
+  ['Mani Vannan', 'construction', 'Kodambakkam', 13.0521, 80.2255, false, true, 13, '135'],
 
-  ['Farooq Ahmed', 'packers_movers', 'Triplicane', 13.0588, 80.2756, false, true, 8,
-    [['Home Shifting (Local)', 4500], ['Office / Commercial Shifting', 4900], ['Packing & Unpacking Service', 1500], ['Loading & Unloading Labor', 800]]],
-  ['Ramesh Babu', 'packers_movers', 'West Mambalam', 13.039, 80.221, true, true, 6,
-    [['Home Shifting (Local)', 3800], ['Furniture Disassembly & Reassembly', 900], ['Packing & Unpacking Service', 1200], ['Vehicle Transport (Bike/Car Carrier)', 2500]]],
-  ['Siva Prakash', 'packers_movers', 'Perambur', 13.118, 80.233, false, true, 5,
-    [['Loading & Unloading Labor', 700], ['Vehicle Transport (Bike/Car Carrier)', 2800], ['Office / Commercial Shifting', 4500]]],
-  ['Kumaresan Pillai', 'packers_movers', 'Purasawalkam', 13.0878, 80.2545, true, true, 10,
-    [['Furniture Disassembly & Reassembly', 1000], ['Office / Commercial Shifting', 4800], ['Loading & Unloading Labor', 750]]],
-  ['Gopi Nathan', 'packers_movers', 'Medavakkam', 12.9171, 80.1923, true, false, 4,
-    [['Home Shifting (Local)', 3500], ['Loading & Unloading Labor', 650]]],
+  ['Farooq Ahmed', 'packers_movers', 'Triplicane', 13.0588, 80.2756, false, true, 8, '0134'],
+  ['Ramesh Babu', 'packers_movers', 'West Mambalam', 13.039, 80.221, true, true, 6, '0235'],
+  ['Siva Prakash', 'packers_movers', 'Perambur', 13.118, 80.233, false, true, 5, '451'],
+  ['Kumaresan Pillai', 'packers_movers', 'Purasawalkam', 13.0878, 80.2545, true, true, 10, '214'],
+  ['Gopi Nathan', 'packers_movers', 'Medavakkam', 12.9171, 80.1923, true, false, 4, '04'],
 
-  ['Kavitha Raman', 'cctv_security', 'Mylapore', 13.0339, 80.2619, true, true, 7,
-    [['CCTV Camera Repair & Maintenance', 500], ['DVR/NVR Setup & Configuration', 800], ['Video Doorbell Installation', 900], ['Intercom System Setup', 1800]]],
-  ['Priya Natarajan', 'cctv_security', 'Nungambakkam', 13.0614, 80.2401, false, true, 6,
-    [['CCTV Camera Installation', 1200], ['Security Alarm Installation', 2000], ['Access Control / Biometric Lock Installation', 2500], ['Video Doorbell Installation', 850]]],
-  ['Dhanush Kannan', 'cctv_security', 'T. Nagar', 13.0405, 80.2337, true, true, 9,
-    [['CCTV Camera Installation', 1000], ['CCTV Camera Repair & Maintenance', 450], ['Cable Routing & Wiring', 25, 'per sq ft'], ['DVR/NVR Setup & Configuration', 750]]],
-  ['Rajesh Menon', 'cctv_security', 'Kilpauk', 13.0838, 80.2401, false, true, 12,
-    [['Security Alarm Installation', 1800], ['Access Control / Biometric Lock Installation', 2800], ['Intercom System Setup', 1600], ['Cable Routing & Wiring', 30, 'per sq ft']]],
+  ['Kavitha Raman', 'cctv_security', 'Mylapore', 13.0339, 80.2619, true, true, 7, '1246'],
+  ['Priya Natarajan', 'cctv_security', 'Nungambakkam', 13.0614, 80.2401, false, true, 6, '0354'],
+  ['Dhanush Kannan', 'cctv_security', 'T. Nagar', 13.0405, 80.2337, true, true, 9, '0172'],
+  ['Rajesh Menon', 'cctv_security', 'Kilpauk', 13.0838, 80.2401, false, true, 12, '3567'],
 
-  ['Muthu Kumar', 'mechanic', 'Guindy', 13.0108, 80.2133, true, true, 14,
-    [['Bike general service', 600], ['Car general service', 2500], ['Breakdown assistance', 500], ['Puncture repair', 100]]],
-  ['Anand Raj', 'mechanic', 'Porur', 13.035, 80.158, false, true, 9,
-    [['Car battery replacement', 300], ['Brake pad replacement', 900], ['Bike engine repair', 1500]]],
-  ['Sebastian Paul', 'mechanic', 'Adyar', 13.0067, 80.257, true, true, 12,
-    [['Two-wheeler service at home', 700], ['Car AC repair', 1500], ['Clutch repair', 1800]]],
-  ['Karim Sheikh', 'mechanic', 'Perungudi', 12.9654, 80.2461, true, true, 7,
-    [['Breakdown towing', 1200], ['Puncture repair', 120], ['Car general service', 2200]]],
+  ['Muthu Kumar', 'mechanic', 'Guindy', 13.0108, 80.2133, true, true, 14, '0157'],
+  ['Anand Raj', 'mechanic', 'Arumbakkam', 13.0732, 80.21, false, true, 9, '012345'],
+  ['Sebastian Paul', 'mechanic', 'Adyar', 13.0067, 80.257, true, true, 12, '456701'],
+  ['Karim Sheikh', 'mechanic', 'Washermanpet', 13.118, 80.289, true, true, 7, '236704'],
 ];
 
-const FEMALE_WORKERS = new Set(['Lakshmi Devi', 'Meena Kumari', 'Selvi Rajan', 'Kavitha Raman', 'Priya Natarajan']);
+// Keeps prices looking natural: ₹18, ₹650, ₹2,450.
+const roundPrice = (n) => (n < 100 ? Math.round(n) : n < 1000 ? Math.round(n / 10) * 10 : Math.round(n / 50) * 50);
+
+const servicesFor = (category, picks, workerIndex) =>
+  [...picks].map((position) => {
+    const job = jobsFor(category)[Number(position)];
+    const [price, unit = 'per job'] = JOB_PRICES[job.id];
+    const variation = 1 + (((workerIndex + Number(position)) % 5) - 2) * 0.05;
+    return { name: job.name, price: roundPrice(price * variation), unit, job: job.id };
+  });
+
+const FEMALE_WORKERS = new Set(['Lakshmi Devi', 'Meena Kumari', 'Selvi Rajan', 'Revathi Sekar', 'Kavitha Raman', 'Priya Natarajan']);
+
+// Each worker gets their own placeholder portrait from client/public/avatars.
+const photoCounts = { male: 0, female: 0 };
+function nextPhoto(gender) {
+  photoCounts[gender] += 1;
+  const number = String(photoCounts[gender]).padStart(2, '0');
+  return `/avatars/${gender === 'female' ? 'women' : 'men'}-${number}.jpg`;
+}
 
 const CUSTOMERS = [
   ['Arun Prasad', 13.0475, 80.2400],
@@ -158,32 +169,27 @@ async function seed() {
   );
 
   const workers = await Promise.all(
-    WORKERS.map(([name, category, area, lat, lng, negotiable, available, years, services], i) =>
-      upsertUser({
+    WORKERS.map(([name, category, area, lat, lng, negotiable, available, years, picks], i) => {
+      const gender = FEMALE_WORKERS.has(name) ? 'female' : 'male';
+      return upsertUser({
         name,
         email: `${slug(name)}${SEED_DOMAIN}`,
         phone: `94440000${String(i).padStart(2, '0')}`,
         password,
         role: 'worker',
-        // No photo: the app draws a picture that matches the worker's gender.
-        profilePhoto: '',
-        gender: FEMALE_WORKERS.has(name) ? 'female' : 'male',
+        profilePhoto: nextPhoto(gender),
+        gender,
         location: { type: 'Point', coordinates: [lng, lat] },
         address: `${area}, Chennai`,
         serviceCategory: category,
-        services: services.map(([serviceName, price, unit = 'per job']) => ({
-          name: serviceName,
-          price,
-          unit,
-          job: jobsFor(category).find((j) => j.name === serviceName)?.id,
-        })),
+        services: servicesFor(category, picks, i),
         bio: `${years} years of experience in ${CATEGORY_LABEL[category]} work around ${area} and nearby areas.`,
         experienceYears: years,
         isNegotiable: negotiable,
         isVerified: true,
         availability: available,
-      })
-    )
+      });
+    })
   );
 
   // Replace only the sample reviews: seed reviews point at bookings that don't exist,
