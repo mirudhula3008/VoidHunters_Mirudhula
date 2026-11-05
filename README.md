@@ -221,8 +221,8 @@ A few are marked *Busy* so you can see that state.
 
 ### 1. Clone
 ```bash
-git clone https://github.com/mirudhula3008/Blue-Collar-Service-Platform.git
-cd Blue-Collar-Service-Platform
+git clone https://github.com/mirudhula3008/VoidHunters_Mirudhula.git
+cd VoidHunters_Mirudhula
 ```
 
 ### 2. Backend
