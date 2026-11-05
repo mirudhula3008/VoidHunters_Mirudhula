@@ -480,7 +480,14 @@
     "submitFailed": "Could not submit your review.",
     "submitting": "Submitting…",
     "tapToRate": "Tap to rate",
-    "yourReview": "Your review (optional)"
+    "yourReview": "Your review (optional)",
+    "addPhoto": "Add a photo (optional)",
+    "photoHint": "Show the finished work. JPG, PNG or WEBP, up to 5 MB.",
+    "removePhoto": "Remove photo",
+    "photoAlt": "Photo of the work from this review",
+    "viewPhoto": "View full size",
+    "photoType": "Photo must be a JPG, PNG or WEBP image",
+    "photoTooLarge": "Photo is too large (max 5 MB)"
   },
   "common": {
     "search": "Search...",

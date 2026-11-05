@@ -8,6 +8,7 @@ import { getWorkerAdminProfile, setWorkerStatus, uploadEvidence } from '../api/a
 import { errorMessage } from '../api/client';
 import { formatPrice } from '../utils/format';
 import Avatar from '../components/Avatar';
+import ReviewImage from '../components/ReviewImage';
 import { useLanguage } from '../context/LanguageContext';
 import { serviceLabel } from '../data/categories';
 
@@ -195,6 +196,7 @@ export default function AdminWorkerDetail() {
                       </span>
                     </div>
                     {r.comment && <p className="mt-1 text-sm text-slate-600">{r.comment}</p>}
+                    {r.image && <ReviewImage src={r.image} className="mt-2" />}
                     <p className="mt-1 text-xs text-slate-400">{shortDate(r.createdAt)}</p>
                   </li>
                 ))}

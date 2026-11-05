@@ -480,7 +480,14 @@
     "submitFailed": "आपकी समीक्षा जमा नहीं हो सकी।",
     "submitting": "जमा हो रहा है…",
     "tapToRate": "रेटिंग देने के लिए टैप करें",
-    "yourReview": "आपकी समीक्षा (वैकल्पिक)"
+    "yourReview": "आपकी समीक्षा (वैकल्पिक)",
+    "addPhoto": "फ़ोटो जोड़ें (वैकल्पिक)",
+    "photoHint": "पूरा हुआ काम दिखाएं। JPG, PNG या WEBP, 5 MB तक।",
+    "removePhoto": "फ़ोटो हटाएं",
+    "photoAlt": "इस समीक्षा में काम की फ़ोटो",
+    "viewPhoto": "पूरे आकार में देखें",
+    "photoType": "फ़ोटो JPG, PNG या WEBP छवि होनी चाहिए",
+    "photoTooLarge": "फ़ोटो बहुत बड़ी है (अधिकतम 5 MB)"
   },
   "common": {
     "search": "खोजें...",

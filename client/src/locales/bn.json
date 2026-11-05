@@ -480,7 +480,14 @@
     "submitFailed": "আপনার রিভিউ জমা দেওয়া গেল না।",
     "submitting": "জমা হচ্ছে…",
     "tapToRate": "রেটিং দিতে ট্যাপ করুন",
-    "yourReview": "আপনার রিভিউ (ঐচ্ছিক)"
+    "yourReview": "আপনার রিভিউ (ঐচ্ছিক)",
+    "addPhoto": "ছবি যোগ করুন (ঐচ্ছিক)",
+    "photoHint": "সম্পন্ন কাজটি দেখান। JPG, PNG বা WEBP, ৫ MB পর্যন্ত।",
+    "removePhoto": "ছবি সরান",
+    "photoAlt": "এই রিভিউয়ের কাজের ছবি",
+    "viewPhoto": "পুরো আকারে দেখুন",
+    "photoType": "ছবিটি JPG, PNG বা WEBP হতে হবে",
+    "photoTooLarge": "ছবিটি খুব বড় (সর্বোচ্চ ৫ MB)"
   },
   "common": {
     "search": "খুঁজুন...",

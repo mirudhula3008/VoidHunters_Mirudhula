@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import ReviewForm from '../components/ReviewForm';
+import ReviewImage from '../components/ReviewImage';
 import StarRating from '../components/StarRating';
 import { getReviewForBooking } from '../api/reviews';
 import { useLanguage } from '../context/LanguageContext';
@@ -41,6 +42,7 @@ export default function ReviewPage() {
               <StarRating value={review.rating} size="md" />
             </div>
             {review.comment && <p className="mt-3 text-slate-600">“{review.comment}”</p>}
+            {review.image && <ReviewImage src={review.image} className="mt-4" />}
             {submitted?.workerRating && (
               <p className="mt-4 text-sm text-slate-500">
                 {t('review.newAverage', {

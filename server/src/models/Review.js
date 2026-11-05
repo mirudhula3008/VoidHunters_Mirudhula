@@ -9,6 +9,7 @@ const reviewSchema = new mongoose.Schema(
     workerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     rating: { type: Number, required: true, min: 1, max: 5 },
     comment: { type: String, default: '', trim: true, maxlength: 1000 },
+    image: { type: String, default: '' },
   },
   { timestamps: { createdAt: true, updatedAt: false } }
 );

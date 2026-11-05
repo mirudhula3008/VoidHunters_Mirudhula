@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ReviewImage from './ReviewImage';
 import StarRating from './StarRating';
 import { getReviewsForWorker } from '../api/reviews';
 import { formatDate } from '../utils/format';
@@ -68,6 +69,7 @@ export default function ReviewList({ workerId }) {
                 </div>
               </div>
               {r.comment && <p className="mt-2 whitespace-pre-line text-slate-700">{r.comment}</p>}
+              {r.image && <ReviewImage src={r.image} className="mt-3" />}
             </li>
           ))}
         </ul>

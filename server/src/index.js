@@ -12,6 +12,9 @@ if (!process.env.JWT_SECRET) {
 
 const app = express();
 
+// Behind Render's proxy, so uploaded file URLs use https like the site itself.
+app.set('trust proxy', 1);
+
 app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
 app.use(express.json());
 

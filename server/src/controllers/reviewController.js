@@ -3,10 +3,11 @@ const Booking = require('../models/Booking');
 const Review = require('../models/Review');
 const { recalculateWorkerRating } = require('../utils/ratings');
 const { asyncHandler, httpError } = require('../utils/http');
+const { storeFile } = require('../utils/storage');
 
 const CUSTOMER_FIELDS = 'name profilePhoto';
 
-// POST /api/reviews   (customer)  { bookingId, rating, comment }
+// POST /api/reviews   (customer)  { bookingId, rating, comment } with an optional image file (field "image")
 // One review per completed booking, written by the booking's customer.
 const createReview = asyncHandler(async (req, res) => {
   const { bookingId, comment = '' } = req.body;
@@ -24,6 +25,9 @@ const createReview = asyncHandler(async (req, res) => {
   if (booking.status !== 'completed') throw httpError(400, 'You can only review a job after it is completed');
   if (await Review.exists({ bookingId })) throw httpError(409, 'You have already reviewed this booking');
 
+  // Stored only after the checks above, so rejected reviews leave no file behind.
+  const image = req.file ? await storeFile(req.file, 'review-images', req) : '';
+
   let review;
   try {
     review = await Review.create({
@@ -32,6 +36,7 @@ const createReview = asyncHandler(async (req, res) => {
       workerId: booking.workerId,
       rating,
       comment: String(comment).trim(),
+      image,
     });
   } catch (err) {
     // Two submissions racing past the exists() check above
